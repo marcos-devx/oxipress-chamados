@@ -50,6 +50,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname)));
 app.use('/uploads', requireAuth, express.static(path.join(__dirname, 'uploads')));
 
+// Rota raiz -> redireciona para login
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
+
 // ══════════════════════════════════════════════════════════════
 //  AUTH
 // ══════════════════════════════════════════════════════════════
