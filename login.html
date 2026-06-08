@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Chamados TI — Oxipress</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 to-blue-900 min-h-screen flex items-center justify-center p-4">
+<div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
+  <div class="text-center mb-8">
+    <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
+      <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    </div>
+    <h1 class="text-2xl font-bold text-slate-800">Chamados TI</h1>
+    <p class="text-slate-500 text-sm mt-1">Oxipress — Suporte de Tecnologia</p>
+  </div>
+  <div id="erro" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg"></div>
+  <form id="form" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">E-mail</label>
+      <input id="email" type="email" placeholder="seu@email.com" autocomplete="email"
+        class="w-full border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <div>
+      <label class="block text-sm font-medium text-slate-700 mb-1">Senha</label>
+      <input id="senha" type="password" placeholder="••••••••" autocomplete="current-password"
+        class="w-full border border-slate-300 rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <button type="submit" id="btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition">
+      Entrar
+    </button>
+  </form>
+</div>
+<script>
+document.getElementById('form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const erroEl = document.getElementById('erro');
+  const btn = document.getElementById('btn');
+  erroEl.classList.add('hidden');
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  const res = await fetch('/api/auth/login', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ email: document.getElementById('email').value, senha: document.getElementById('senha').value })
+  });
+  const data = await res.json();
+  if (!res.ok) { erroEl.textContent = data.erro; erroEl.classList.remove('hidden'); btn.disabled=false; btn.textContent='Entrar'; return; }
+  localStorage.setItem('oxi_token', data.token);
+  localStorage.setItem('oxi_usuario', JSON.stringify(data.usuario));
+  window.location.href = data.usuario.role === 'admin' ? '/admin.html' : '/app.html';
+});
+// Já logado?
+const t = localStorage.getItem('oxi_token');
+if (t) {
+  const u = JSON.parse(localStorage.getItem('oxi_usuario')||'{}');
+  if (u.role==='admin') window.location.href='/admin.html';
+  else if (u.id) window.location.href='/app.html';
+}
+</script>
+</body>
+</html>

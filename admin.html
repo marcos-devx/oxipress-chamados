@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin — Chamados TI Oxipress</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0f172a}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}</style>
+</head>
+<body class="bg-slate-100 min-h-screen">
+<div id="layout" class="hidden flex min-h-screen">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-slate-900 flex flex-col flex-shrink-0">
+    <div class="p-5 border-b border-slate-700">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-indigo-600 rounded-lg flex-shrink-0 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+        </div>
+        <div><p class="font-bold text-white text-sm">Painel Admin</p><p class="text-xs text-slate-400">TI — Oxipress</p></div>
+      </div>
+    </div>
+    <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
+      <button onclick="ir('dashboard')" id="nav-dashboard" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition bg-slate-800 text-white">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        Dashboard
+      </button>
+      <button onclick="ir('chamados')" id="nav-chamados" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+        Chamados
+        <span id="badge-atrasados" class="hidden ml-auto bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5"></span>
+      </button>
+      <button onclick="ir('usuarios')" id="nav-usuarios" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+        Usuários
+      </button>
+      <button onclick="ir('sugestoes')" id="nav-sugestoes" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        Sugestões
+      </button>
+      <button onclick="ir('avaliacoes')" id="nav-avaliacoes" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        Avaliações
+      </button>
+    </nav>
+    <div class="p-3 border-t border-slate-700">
+      <button onclick="logout()" class="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        Sair
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="flex-1 overflow-auto">
+
+    <!-- ─── DASHBOARD ─── -->
+    <section id="sec-dashboard" class="p-6">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div><h2 class="text-2xl font-bold text-slate-800">Dashboard</h2><p class="text-slate-500 text-sm">Visão geral da operação</p></div>
+        <div class="flex gap-2">
+          <select id="periodo-dash" onchange="carregarDashboard()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <option value="hoje">Hoje</option>
+            <option value="semana">Últimos 7 dias</option>
+            <option value="mes" selected>Últimos 30 dias</option>
+            <option value="ano">Este ano</option>
+            <option value="tudo">Tudo</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div id="kpi-cards" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-8 gap-3 mb-6"></div>
+
+      <!-- Charts row 1 -->
+      <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
+        <div class="xl:col-span-2 bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Chamados por Dia (últimos 30 dias)</h3>
+          <canvas id="chart-evolucao" height="120"></canvas>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Por Prioridade</h3>
+          <canvas id="chart-prio" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Charts row 2 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-5">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Por Categoria</h3>
+          <canvas id="chart-cat" height="200"></canvas>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">🏆 Ranking de Setores</h3>
+          <div id="ranking-setores" class="space-y-2"></div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">📋 Top Usuários</h3>
+          <div id="top-usuarios" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- Row 3: Recorrentes + Atrasados + SLA -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-1">🔁 Chamados Recorrentes</h3>
+          <p class="text-xs text-slate-500 mb-3">Setor+Categoria com 3 ou mais ocorrências</p>
+          <div id="recorrentes-list" class="space-y-2"></div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-1">⚠️ Chamados em Atraso</h3>
+          <p class="text-xs text-slate-500 mb-3">SLA vencido, ainda não resolvidos</p>
+          <div id="atrasados-list" class="space-y-2"></div>
+        </div>
+      </div>
+
+      <!-- SLA + Avaliação -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">SLA — Cumprimento</h3>
+          <canvas id="chart-sla" height="160"></canvas>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Avaliações Recentes</h3>
+          <div id="aval-recentes" class="space-y-3"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── CHAMADOS ─── -->
+    <section id="sec-chamados" class="hidden p-6">
+      <!-- Lista -->
+      <div id="view-lista-c">
+        <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+          <h2 class="text-2xl font-bold text-slate-800">Todos os Chamados</h2>
+          <button onclick="exportarCSV()" class="flex items-center gap-1.5 text-sm border border-slate-300 text-slate-600 hover:border-slate-400 px-4 py-2 rounded-lg transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            Exportar CSV
+          </button>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-4 mb-4">
+          <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+            <input id="a-busca" type="text" placeholder="Buscar..." oninput="carregarTodosChamados()" class="col-span-2 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            <select id="a-status" onchange="carregarTodosChamados()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+              <option value="">Todos os status</option>
+              <option>Aberto</option><option>Em Andamento</option><option>Aguardando Usuario</option><option>Concluido</option><option>Cancelado</option>
+            </select>
+            <select id="a-prio" onchange="carregarTodosChamados()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+              <option value="">Prioridade</option>
+              <option>Critica</option><option>Alta</option><option>Media</option><option>Baixa</option>
+            </select>
+            <select id="a-periodo" onchange="carregarTodosChamados()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
+              <option value="">Período</option>
+              <option value="hoje">Hoje</option><option value="semana">Semana</option><option value="mes">Mês</option><option value="ano">Ano</option>
+            </select>
+            <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
+              <input type="checkbox" id="a-atrasados" onchange="carregarTodosChamados()" class="rounded">
+              Só atrasados
+            </label>
+          </div>
+        </div>
+        <div id="lista-admin-c" class="space-y-3"></div>
+      </div>
+      <!-- Detalhe -->
+      <div id="view-detalhe-c" class="hidden">
+        <button onclick="voltarListaC()" class="flex items-center gap-1 text-sm text-slate-500 hover:text-indigo-600 mb-5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+          Voltar para lista
+        </button>
+        <div id="detalhe-admin-c"></div>
+      </div>
+    </section>
+
+    <!-- ─── USUÁRIOS ─── -->
+    <section id="sec-usuarios" class="hidden p-6">
+      <div id="view-lista-u">
+        <div class="flex items-center justify-between mb-5">
+          <h2 class="text-2xl font-bold text-slate-800">Usuários</h2>
+          <button onclick="abrirFormUsuario()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Novo Usuário
+          </button>
+        </div>
+        <div id="form-usuario" class="hidden bg-white rounded-xl border border-slate-200 p-6 mb-5">
+          <h3 id="titulo-form-u" class="font-semibold text-slate-800 mb-4">Novo Usuário</h3>
+          <div id="erro-form-u" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg"></div>
+          <form id="form-u" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="hidden" id="u-id">
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Nome *</label><input id="u-nome" type="text" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">E-mail *</label><input id="u-email" type="email" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Setor *</label>
+              <select id="u-setor" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option>RH</option><option>Comercial</option><option>Faturamento</option><option>Compras</option><option>Diretoria</option><option>Producao</option><option>TI</option><option>Outros</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Cargo</label><input id="u-cargo" type="text" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Perfil</label>
+              <select id="u-role" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <option value="usuario">Usuário</option><option value="admin">Administrador (TI)</option>
+              </select></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Senha <span id="senha-hint" class="text-slate-400">(obrigatória)</span></label><input id="u-senha" type="password" placeholder="Mínimo 6 caracteres" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+            <div class="md:col-span-2 flex gap-3">
+              <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm transition">Salvar</button>
+              <button type="button" onclick="fecharFormUsuario()" class="text-slate-600 font-medium px-4 py-2.5 rounded-lg text-sm hover:bg-slate-100">Cancelar</button>
+            </div>
+          </form>
+        </div>
+        <div id="lista-usuarios" class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr><th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Nome</th><th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">E-mail</th><th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">Setor</th><th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase hidden md:table-cell">Perfil</th><th class="text-left px-4 py-3 text-xs font-semibold text-slate-500 uppercase">Status</th><th class="px-4 py-3"></th></tr>
+            </thead>
+            <tbody id="tbody-usuarios"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── SUGESTÕES ─── -->
+    <section id="sec-sugestoes" class="hidden p-6">
+      <div id="view-lista-s">
+        <h2 class="text-2xl font-bold text-slate-800 mb-5">Sugestões de Melhoria</h2>
+        <div id="cards-sug" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5"></div>
+        <div class="flex gap-3 mb-4 flex-wrap">
+          <select id="s-fil-status" onchange="carregarSugestoes()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
+            <option value="">Todos os status</option>
+            <option>Aberta</option><option>Em Análise</option><option>Aprovada</option><option>Implementada</option><option>Recusada</option>
+          </select>
+        </div>
+        <div id="lista-sug-admin" class="space-y-3"></div>
+      </div>
+      <div id="view-detalhe-s" class="hidden">
+        <button onclick="voltarListaS()" class="flex items-center gap-1 text-sm text-slate-500 hover:text-indigo-600 mb-5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>Voltar
+        </button>
+        <div id="detalhe-sug"></div>
+      </div>
+    </section>
+
+    <!-- ─── AVALIAÇÕES ─── -->
+    <section id="sec-avaliacoes" class="hidden p-6">
+      <h2 class="text-2xl font-bold text-slate-800 mb-5">Avaliações dos Atendimentos</h2>
+      <div id="cards-aval" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5"></div>
+      <div class="bg-white rounded-xl border border-slate-200 p-5">
+        <h3 class="font-semibold text-slate-800 mb-4">Todas as Avaliações</h3>
+        <div id="lista-aval-admin" class="space-y-3"></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+let TOKEN = localStorage.getItem('oxi_token');
+let USUARIO = JSON.parse(localStorage.getItem('oxi_usuario')||'null');
+if (!TOKEN || !USUARIO || USUARIO.role!=='admin') { window.location.href='/login.html'; }
+const H = {'Authorization':`Bearer ${TOKEN}`,'Content-Type':'application/json'};
+let charts = {};
+
+async function api(url, opts={}) {
+  const r = await fetch(url, {headers:H,...opts});
+  if (r.status===401) { logout(); return null; }
+  return r.json();
+}
+function logout() { localStorage.clear(); window.location.href='/login.html'; }
+
+function ir(s) {
+  ['dashboard','chamados','usuarios','sugestoes','avaliacoes'].forEach(x=>{
+    document.getElementById(`sec-${x}`).classList.add('hidden');
+    document.getElementById(`nav-${x}`).className='nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800';
+  });
+  document.getElementById(`sec-${s}`).classList.remove('hidden');
+  document.getElementById(`nav-${s}`).className='nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition bg-slate-800 text-white';
+  if (s==='dashboard')  carregarDashboard();
+  if (s==='chamados')   { document.getElementById('view-lista-c').classList.remove('hidden'); document.getElementById('view-detalhe-c').classList.add('hidden'); carregarTodosChamados(); }
+  if (s==='usuarios')   carregarUsuarios();
+  if (s==='sugestoes')  { document.getElementById('view-lista-s').classList.remove('hidden'); document.getElementById('view-detalhe-s').classList.add('hidden'); carregarSugestoes(); }
+  if (s==='avaliacoes') carregarAvaliacoes();
+}
+
+async function init() {
+  document.getElementById('layout').classList.remove('hidden');
+  await carregarDashboard();
+}
+
+// ─── Dashboard ────────────────────────────────────────────────
+async function carregarDashboard() {
+  const periodo = document.getElementById('periodo-dash').value;
+  const d = await api(`/api/dashboard/stats?periodo=${periodo}`);
+  if (!d) return;
+
+  // Atualizar badge atrasados
+  if (d.atrasados>0) { document.getElementById('badge-atrasados').textContent=d.atrasados; document.getElementById('badge-atrasados').classList.remove('hidden'); }
+  else document.getElementById('badge-atrasados').classList.add('hidden');
+
+  // KPI cards
+  document.getElementById('kpi-cards').innerHTML = [
+    kpi('Total',d.total,'#6366f1'),
+    kpi('Abertos',d.abertos,'#3b82f6'),
+    kpi('Andamento',d.andamento,'#f59e0b'),
+    kpi('Concluídos',d.concluidos,'#10b981'),
+    kpi('Cancelados',d.cancelados,'#6b7280'),
+    kpi('Críticos',d.criticos,'#ef4444'),
+    kpi('Atrasados',d.atrasados,'#dc2626'),
+    kpi('Nota Média',d.avaliacao_media?`${d.avaliacao_media}⭐`:'—','#eab308'),
+  ].join('');
+
+  // Tempo médio
+  const tmaStr = d.tma ? `${d.tma}h` : '—';
+  const tmrStr = d.tmr ? `${d.tmr}h` : '—';
+  document.getElementById('kpi-cards').innerHTML += `
+    <div class="col-span-2 bg-white rounded-xl border border-slate-200 p-4 flex gap-6">
+      <div><p class="text-xs text-slate-500">⏱ Tempo médio 1ª resposta</p><p class="text-2xl font-bold text-slate-800">${tmaStr}</p></div>
+      <div class="border-l border-slate-200 pl-6"><p class="text-xs text-slate-500">✅ Tempo médio resolução</p><p class="text-2xl font-bold text-slate-800">${tmrStr}</p></div>
+    </div>`;
+
+  // Charts
+  destroyChart('chart-evolucao');
+  destroyChart('chart-prio');
+  destroyChart('chart-cat');
+  destroyChart('chart-sla');
+
+  new Chart(document.getElementById('chart-evolucao'), {
+    type: 'line',
+    data: {
+      labels: d.evolucao.map(e=>e.dia.slice(5)),
+      datasets: [{ label:'Chamados', data: d.evolucao.map(e=>e.n), borderColor:'#6366f1', backgroundColor:'#6366f120', tension:0.3, fill:true, pointRadius:3 }]
+    },
+    options: { responsive:true, plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true,ticks:{stepSize:1}}} }
+  });
+
+  const prioLabels = d.por_prioridade.map(p=>p.prioridade);
+  const prioCores = {'Critica':'#ef4444','Alta':'#f97316','Media':'#eab308','Baixa':'#22c55e'};
+  new Chart(document.getElementById('chart-prio'), {
+    type: 'doughnut',
+    data: {
+      labels: prioLabels,
+      datasets: [{ data: d.por_prioridade.map(p=>p.n), backgroundColor: prioLabels.map(p=>prioCores[p]||'#94a3b8') }]
+    },
+    options: { responsive:true, plugins:{legend:{position:'bottom'}} }
+  });
+
+  new Chart(document.getElementById('chart-cat'), {
+    type: 'bar',
+    data: {
+      labels: d.por_categoria.map(c=>c.categoria),
+      datasets: [{ label:'Chamados', data: d.por_categoria.map(c=>c.n), backgroundColor:'#6366f180', borderColor:'#6366f1', borderWidth:1 }]
+    },
+    options: { responsive:true, indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true,ticks:{stepSize:1}}} }
+  });
+
+  new Chart(document.getElementById('chart-sla'), {
+    type: 'pie',
+    data: {
+      labels: ['Dentro do SLA','SLA Violado'],
+      datasets: [{ data: [d.sla_cumprido, d.sla_violado], backgroundColor: ['#22c55e','#ef4444'] }]
+    },
+    options: { responsive:true, plugins:{legend:{position:'bottom'}} }
+  });
+
+  // Ranking setores
+  const maxS = Math.max(...d.ranking_setores.map(s=>s.n), 1);
+  document.getElementById('ranking-setores').innerHTML = d.ranking_setores.map((s,i)=>`
+    <div class="flex items-center gap-2">
+      <span class="text-xs w-4 text-slate-400">${i+1}</span>
+      <div class="flex-1"><div class="flex justify-between text-sm mb-0.5"><span>${s.setor}</span><span class="font-semibold">${s.n}</span></div>
+      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-400 rounded-full" style="width:${Math.round((s.n/maxS)*100)}%"></div></div></div>
+    </div>`).join('') || '<p class="text-slate-400 text-sm">Sem dados.</p>';
+
+  // Top usuários
+  const maxU = Math.max(...d.por_usuario.map(u=>u.n), 1);
+  document.getElementById('top-usuarios').innerHTML = d.por_usuario.slice(0,8).map((u,i)=>`
+    <div class="flex items-center gap-2">
+      <span class="text-xs w-4 text-slate-400">${i+1}</span>
+      <div class="flex-1"><div class="flex justify-between text-sm mb-0.5"><span class="truncate max-w-[140px]">${u.nome}</span><span class="font-semibold">${u.n}</span></div>
+      <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-blue-400 rounded-full" style="width:${Math.round((u.n/maxU)*100)}%"></div></div></div>
+    </div>`).join('') || '<p class="text-slate-400 text-sm">Sem dados.</p>';
+
+  // Recorrentes
+  document.getElementById('recorrentes-list').innerHTML = d.recorrentes.length
+    ? d.recorrentes.map(r=>`<div class="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
+        <div><span class="text-sm font-medium text-slate-700">${r.setor}</span> <span class="text-slate-400 text-sm">— ${r.categoria}</span></div>
+        <span class="text-sm font-bold text-orange-600">${r.n}x</span></div>`).join('')
+    : '<p class="text-slate-400 text-sm">Nenhum recorrente.</p>';
+
+  // Atrasados
+  document.getElementById('atrasados-list').innerHTML = d.lista_atrasados.length
+    ? d.lista_atrasados.slice(0,5).map(c=>`<div onclick="abrirDetalheChamado(${c.id})" class="cursor-pointer flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0 hover:bg-slate-50 -mx-1 px-1 rounded">
+        <div><p class="text-sm font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-400">${c.solicitante_setor} · SLA: ${fmtData(c.sla_limite)}</p></div>
+        <span class="text-xs ${bp(c.prioridade)} px-2 py-0.5 rounded-full">${c.prioridade}</span></div>`).join('')
+    : '<p class="text-slate-400 text-sm text-green-600">✓ Nenhum atrasado.</p>';
+
+  // Avaliações
+  document.getElementById('aval-recentes').innerHTML = d.avaliacoes_recentes.length
+    ? d.avaliacoes_recentes.map(a=>`<div class="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
+        <div class="flex-1"><p class="text-sm text-slate-800">${a.chamado_titulo}</p><p class="text-xs text-slate-500">${a.usuario_nome} · ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-xs text-slate-600 mt-0.5 italic">"${a.comentario}"</p>`:''}</div>
+        <span class="text-sm">${'⭐'.repeat(a.nota)}</span></div>`).join('')
+    : '<p class="text-slate-400 text-sm">Sem avaliações.</p>';
+}
+
+function kpi(label, val, color) {
+  return `<div class="bg-white rounded-xl border border-slate-200 p-4">
+    <p class="text-xs text-slate-500 mb-1">${label}</p>
+    <p class="text-2xl font-bold" style="color:${color}">${val}</p>
+  </div>`;
+}
+function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
+
+// ─── Todos os Chamados ────────────────────────────────────────
+async function carregarTodosChamados() {
+  const busca = document.getElementById('a-busca').value;
+  const status = document.getElementById('a-status').value;
+  const prio = document.getElementById('a-prio').value;
+  const periodo = document.getElementById('a-periodo').value;
+  const atrasados = document.getElementById('a-atrasados').checked ? '1' : '';
+  const p = new URLSearchParams();
+  if (busca) p.set('busca',busca);
+  if (status) p.set('status',status);
+  if (prio) p.set('prioridade',prio);
+  if (periodo) p.set('periodo',periodo);
+  if (atrasados) p.set('atrasados',atrasados);
+  const lista = await api(`/api/chamados?${p}`);
+  if (!lista) return;
+  const el = document.getElementById('lista-admin-c');
+  if (!lista.length) { el.innerHTML='<div class="text-center py-12 text-slate-400 bg-white rounded-xl border border-slate-200"><p>Nenhum chamado encontrado.</p></div>'; return; }
+  el.innerHTML = lista.map(c=>`
+    <div onclick="abrirDetalheChamado(${c.id})" class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:border-indigo-300 hover:shadow-sm transition">
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1.5 mb-1 flex-wrap">
+            <span class="text-xs font-mono text-slate-400">${c.protocolo}</span>
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium ${bs(c.status)}">${c.status}</span>
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium ${bp(c.prioridade)}">${c.prioridade}</span>
+            <span class="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">${c.setor}</span>
+            ${c.sla_limite && c.status!=='Concluido' && c.status!=='Cancelado' && new Date(c.sla_limite.replace(' ','T'))<new Date() ? '<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">⚠️ Atrasado</span>' : ''}
+          </div>
+          <h3 class="font-semibold text-slate-800 truncate">${c.titulo}</h3>
+          <p class="text-xs text-slate-500">${c.categoria} · ${c.solicitante_nome} · ${fmtData(c.criado_em)}</p>
+        </div>
+        <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>`).join('');
+}
+
+async function abrirDetalheChamado(id) {
+  document.getElementById('view-lista-c').classList.add('hidden');
+  document.getElementById('view-detalhe-c').classList.remove('hidden');
+  const c = await api(`/api/chamados/${id}`);
+  if (!c) return;
+  const hist = (c.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} · ${fmtData(h.criado_em)}</p></div></div>`).join('');
+  const anexosHtml = (c.anexos||[]).map(a=>`<a href="/uploads/${a.nome_arquivo}" target="_blank" class="flex items-center gap-2 text-sm text-blue-600 hover:underline">📎 ${a.nome_original}</a>`).join('') || '<p class="text-slate-400 text-sm">Nenhum.</p>';
+  document.getElementById('detalhe-admin-c').innerHTML = `
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+      <div class="xl:col-span-2 space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <p class="text-xs font-mono text-slate-400 mb-1">${c.protocolo}</p>
+          <h2 class="text-xl font-bold text-slate-800 mb-1">${c.titulo}</h2>
+          <p class="text-slate-500 text-sm">${c.categoria} · ${c.setor} · ${c.solicitante_nome}</p>
+          <div class="flex gap-2 mt-3"><span class="px-3 py-1 rounded-full text-sm font-medium ${bs(c.status)}">${c.status}</span><span class="px-3 py-1 rounded-full text-sm font-medium ${bp(c.prioridade)}">${c.prioridade}</span></div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">Descrição</h4>
+          <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg">${c.descricao}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h4 class="font-semibold text-slate-800 mb-3">Anexos</h4>
+          <div class="space-y-1">${anexosHtml}</div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Histórico</h3>
+          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist||'<p class="text-slate-400 text-sm">Sem histórico.</p>'}</div>
+        </div>
+        ${c.avaliacao?`<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5"><h4 class="font-semibold text-slate-800 mb-2">Avaliação do Usuário</h4><div class="text-xl mb-1">${'⭐'.repeat(c.avaliacao.nota)}</div><p class="text-sm text-slate-600">${c.avaliacao.comentario||'Sem comentário.'}</p></div>`:''}
+      </div>
+      <div class="space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Atualizar Chamado</h3>
+          <div class="space-y-3">
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Status</label>
+              <select id="ed-status" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                ${['Aberto','Em Andamento','Aguardando Usuario','Concluido','Cancelado'].map(s=>`<option ${c.status===s?'selected':''}>${s}</option>`).join('')}
+              </select></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Prioridade</label>
+              <select id="ed-prio" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                ${['Baixa','Media','Alta','Critica'].map(p=>`<option ${c.prioridade===p?'selected':''}>${p}</option>`).join('')}
+              </select></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Comentário / Ação</label>
+              <textarea id="ed-coment" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea></div>
+            <button onclick="salvarChamado(${c.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition">Salvar Alterações</button>
+          </div>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5 text-sm space-y-2">
+          <div class="flex justify-between"><span class="text-slate-500">Abertura</span><span>${fmtData(c.criado_em)}</span></div>
+          ${c.responsavel_nome?`<div class="flex justify-between"><span class="text-slate-500">Responsável</span><span>${c.responsavel_nome}</span></div>`:''}
+          ${c.sla_limite?`<div class="flex justify-between"><span class="text-slate-500">SLA</span><span>${fmtData(c.sla_limite)}</span></div>`:''}
+          ${c.primeiro_atendimento_em?`<div class="flex justify-between"><span class="text-slate-500">1ª Resposta</span><span>${fmtData(c.primeiro_atendimento_em)}</span></div>`:''}
+          ${c.fechado_em?`<div class="flex justify-between"><span class="text-slate-500">Fechado em</span><span>${fmtData(c.fechado_em)}</span></div>`:''}
+        </div>
+      </div>
+    </div>`;
+}
+
+async function salvarChamado(id) {
+  const status = document.getElementById('ed-status').value;
+  const prioridade = document.getElementById('ed-prio').value;
+  const comentario = document.getElementById('ed-coment').value.trim();
+  await fetch(`/api/chamados/${id}`,{method:'PUT',headers:H,body:JSON.stringify({status,prioridade,comentario})});
+  abrirDetalheChamado(id);
+}
+function voltarListaC() { document.getElementById('view-lista-c').classList.remove('hidden'); document.getElementById('view-detalhe-c').classList.add('hidden'); carregarTodosChamados(); }
+
+// ─── Usuários ─────────────────────────────────────────────────
+async function carregarUsuarios() {
+  const lista = await api('/api/usuarios');
+  if (!lista) return;
+  document.getElementById('tbody-usuarios').innerHTML = lista.map(u=>`
+    <tr class="border-b border-slate-100 hover:bg-slate-50">
+      <td class="px-4 py-3 font-medium text-slate-800">${u.nome}</td>
+      <td class="px-4 py-3 text-slate-600">${u.email}</td>
+      <td class="px-4 py-3 text-slate-600 hidden md:table-cell">${u.setor}</td>
+      <td class="px-4 py-3 hidden md:table-cell"><span class="text-xs px-2 py-0.5 rounded-full ${u.role==='admin'?'bg-indigo-100 text-indigo-700':'bg-slate-100 text-slate-700'}">${u.role}</span></td>
+      <td class="px-4 py-3"><span class="text-xs px-2 py-0.5 rounded-full ${u.ativo?'bg-green-100 text-green-700':'bg-red-100 text-red-700'}">${u.ativo?'Ativo':'Bloqueado'}</span></td>
+      <td class="px-4 py-3">
+        <div class="flex gap-2 justify-end">
+          <button onclick="editarUsuario(${u.id},'${u.nome}','${u.email}','${u.setor}','${u.cargo||''}','${u.role}')" class="text-xs text-indigo-600 hover:underline">Editar</button>
+          ${u.ativo?`<button onclick="bloquearUsuario(${u.id})" class="text-xs text-red-600 hover:underline">Bloquear</button>`:`<button onclick="desbloquearUsuario(${u.id})" class="text-xs text-green-600 hover:underline">Ativar</button>`}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+function abrirFormUsuario(id) {
+  document.getElementById('titulo-form-u').textContent = id ? 'Editar Usuário' : 'Novo Usuário';
+  document.getElementById('senha-hint').textContent = id ? '(deixe em branco para manter)' : '(obrigatória)';
+  document.getElementById('form-usuario').classList.remove('hidden');
+  document.getElementById('u-id').value = id||'';
+}
+function fecharFormUsuario() { document.getElementById('form-usuario').classList.add('hidden'); document.getElementById('form-u').reset(); }
+function editarUsuario(id, nome, email, setor, cargo, role) {
+  abrirFormUsuario(id);
+  document.getElementById('u-nome').value=nome;
+  document.getElementById('u-email').value=email;
+  document.getElementById('u-setor').value=setor;
+  document.getElementById('u-cargo').value=cargo;
+  document.getElementById('u-role').value=role;
+}
+async function bloquearUsuario(id) {
+  if (!confirm('Bloquear este usuário?')) return;
+  await fetch(`/api/usuarios/${id}`,{method:'PUT',headers:H,body:JSON.stringify({ativo:0})});
+  carregarUsuarios();
+}
+async function desbloquearUsuario(id) {
+  await fetch(`/api/usuarios/${id}`,{method:'PUT',headers:H,body:JSON.stringify({ativo:1})});
+  carregarUsuarios();
+}
+document.getElementById('form-u').addEventListener('submit', async e => {
+  e.preventDefault();
+  const erroEl = document.getElementById('erro-form-u'); erroEl.classList.add('hidden');
+  const id = document.getElementById('u-id').value;
+  const payload = {
+    nome:  document.getElementById('u-nome').value.trim(),
+    email: document.getElementById('u-email').value.trim(),
+    setor: document.getElementById('u-setor').value,
+    cargo: document.getElementById('u-cargo').value.trim(),
+    role:  document.getElementById('u-role').value,
+  };
+  const senha = document.getElementById('u-senha').value;
+  if (senha) payload.senha = senha;
+  const url = id ? `/api/usuarios/${id}` : '/api/usuarios';
+  const method = id ? 'PUT' : 'POST';
+  if (!id && !senha) { erroEl.textContent='Senha obrigatória para novo usuário.'; erroEl.classList.remove('hidden'); return; }
+  const r = await fetch(url,{method,headers:H,body:JSON.stringify(payload)});
+  const data = await r.json();
+  if (!r.ok) { erroEl.textContent=data.erro; erroEl.classList.remove('hidden'); return; }
+  fecharFormUsuario(); carregarUsuarios();
+});
+
+// ─── Sugestões ────────────────────────────────────────────────
+async function carregarSugestoes() {
+  const ds = await api('/api/dashboard/sugestoes');
+  if (!ds) return;
+  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em Análise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
+  document.getElementById('cards-sug').innerHTML = [
+    ['Total',ds.total,'#6366f1'],['Abertas',ds.abertas,'#3b82f6'],['Em Análise',ds.analise,'#f59e0b'],['Aprovadas',ds.aprovadas,'#10b981'],['Implantadas',ds.implantadas,'#059669']
+  ].map(([l,v,c])=>kpi(l,v,c)).join('');
+
+  const status = document.getElementById('s-fil-status').value;
+  const p = new URLSearchParams(); if (status) p.set('status',status);
+  const lista = await api(`/api/sugestoes?${p}`);
+  if (!lista) return;
+  const el = document.getElementById('lista-sug-admin');
+  if (!lista.length) { el.innerHTML='<div class="text-center py-10 text-slate-400 bg-white rounded-xl border border-slate-200"><p>Nenhuma sugestão.</p></div>'; return; }
+  el.innerHTML = lista.map(s=>`
+    <div onclick="abrirDetalheSug(${s.id})" class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:border-indigo-300 hover:shadow-sm transition">
+      <div class="flex items-start justify-between gap-3">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-2 mb-1"><span class="text-xs px-2 py-0.5 rounded-full font-medium ${cores[s.status]||'bg-slate-100 text-slate-700'}">${s.status}</span><span class="text-xs text-slate-400">${s.categoria}</span></div>
+          <h3 class="font-semibold text-slate-800">${s.titulo}</h3>
+          <p class="text-sm text-slate-500 mt-0.5">${s.autor_nome} · ${s.autor_setor} · ${fmtData(s.criado_em)}</p>
+        </div>
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </div>
+    </div>`).join('');
+}
+async function abrirDetalheSug(id) {
+  document.getElementById('view-lista-s').classList.add('hidden');
+  document.getElementById('view-detalhe-s').classList.remove('hidden');
+  const s = await api(`/api/sugestoes/${id}`);
+  if (!s) return;
+  const hist = (s.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} · ${fmtData(h.criado_em)}</p></div></div>`).join('');
+  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em Análise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
+  document.getElementById('detalhe-sug').innerHTML = `
+    <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
+      <div class="xl:col-span-2 space-y-4">
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex gap-2 mb-2"><span class="text-xs px-2 py-0.5 rounded-full font-medium ${cores[s.status]||'bg-slate-100 text-slate-700'}">${s.status}</span><span class="text-xs text-slate-400">${s.categoria}</span></div>
+          <h2 class="text-xl font-bold text-slate-800 mb-1">${s.titulo}</h2>
+          <p class="text-slate-500 text-sm">${s.autor_nome} · ${s.autor_setor} · ${fmtData(s.criado_em)}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">Descrição</h4>
+          <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg">${s.descricao}</p>
+        </div>
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 class="font-semibold text-slate-800 mb-4">Histórico</h3>
+          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist||'<p class="text-slate-400 text-sm">Sem histórico.</p>'}</div>
+        </div>
+      </div>
+      <div class="bg-white rounded-xl border border-slate-200 p-5 h-fit">
+        <h3 class="font-semibold text-slate-800 mb-4">Atualizar Status</h3>
+        <select id="sug-status" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          ${['Aberta','Em Análise','Aprovada','Implementada','Recusada'].map(st=>`<option ${s.status===st?'selected':''}>${st}</option>`).join('')}
+        </select>
+        <textarea id="sug-coment" rows="3" placeholder="Comentário (opcional)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+        <button onclick="salvarSug(${s.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm">Salvar</button>
+      </div>
+    </div>`;
+}
+async function salvarSug(id) {
+  const status = document.getElementById('sug-status').value;
+  const comentario = document.getElementById('sug-coment').value.trim();
+  await fetch(`/api/sugestoes/${id}`,{method:'PUT',headers:H,body:JSON.stringify({status,comentario})});
+  abrirDetalheSug(id);
+}
+function voltarListaS() { document.getElementById('view-lista-s').classList.remove('hidden'); document.getElementById('view-detalhe-s').classList.add('hidden'); carregarSugestoes(); }
+
+// ─── Avaliações ───────────────────────────────────────────────
+async function carregarAvaliacoes() {
+  const d = await api('/api/dashboard/stats?periodo=tudo');
+  if (!d) return;
+  const total = d.avaliacoes_recentes.length;
+  const media = d.avaliacao_media||0;
+  document.getElementById('cards-aval').innerHTML = [
+    kpi('Avaliações', total, '#6366f1'),
+    kpi('Nota Média', media?`${media} ⭐`:'—', '#eab308'),
+    kpi('SLA Cumprido', d.sla_cumprido, '#22c55e'),
+  ].join('');
+  document.getElementById('lista-aval-admin').innerHTML = d.avaliacoes_recentes.length
+    ? d.avaliacoes_recentes.map(a=>`
+      <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
+        <div class="text-2xl">${'⭐'.repeat(a.nota)}</div>
+        <div class="flex-1"><p class="font-medium text-slate-800">${a.chamado_titulo}</p><p class="text-sm text-slate-500">${a.usuario_nome} · ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-sm text-slate-700 mt-1 italic">"${a.comentario}"</p>`:''}</div>
+      </div>`).join('')
+    : '<p class="text-slate-400">Nenhuma avaliação ainda.</p>';
+}
+
+// ─── Export CSV ───────────────────────────────────────────────
+async function exportarCSV() {
+  const lista = await api('/api/chamados');
+  if (!lista) return;
+  const header = ['Protocolo','Titulo','Categoria','Prioridade','Status','Setor','Solicitante','Responsavel','Criado em','SLA','Fechado em'];
+  const rows = lista.map(c=>[c.protocolo,`"${c.titulo}"`,c.categoria,c.prioridade,c.status,c.setor,c.solicitante_nome,c.responsavel_nome||'',c.criado_em,c.sla_limite||'',c.fechado_em||'']);
+  const csv = [header,...rows].map(r=>r.join(';')).join('\n');
+  const blob = new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=`chamados_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+}
+
+// ─── Helpers ──────────────────────────────────────────────────
+function bs(s){return{'Aberto':'bg-blue-100 text-blue-700','Em Andamento':'bg-amber-100 text-amber-700','Aguardando Usuario':'bg-purple-100 text-purple-700','Concluido':'bg-green-100 text-green-700','Cancelado':'bg-red-100 text-red-700'}[s]||'bg-slate-100 text-slate-700';}
+function bp(p){return{'Critica':'bg-red-100 text-red-700','Alta':'bg-orange-100 text-orange-700','Media':'bg-yellow-100 text-yellow-700','Baixa':'bg-green-100 text-green-700'}[p]||'bg-slate-100 text-slate-700';}
+function fmtData(d){if(!d)return'';try{return new Date(d.replace(' ','T')).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return d;}}
+
+init();
+</script>
+</body>
+</html>

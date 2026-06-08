@@ -1,0 +1,66 @@
+════════════════════════════════════════════════
+  SISTEMA DE CHAMADOS TI v2.0 — OXIPRESS
+  Guia de Instalação
+════════════════════════════════════════════════
+
+PRÉ-REQUISITOS
+──────────────
+• Node.js 18+  →  https://nodejs.org
+• Servidor Linux (Ubuntu/Debian) ou Windows
+• Porta 3000 liberada no firewall
+
+INSTALAÇÃO (5 minutos)
+───────────────────────
+1. Copie a pasta "oxipress-v2" para o servidor
+
+2. Instale as dependências:
+   cd oxipress-v2
+   npm install
+
+3. Configure as variáveis:
+   cp .env.example .env
+   nano .env     ← edite JWT_SECRET e SMTP
+
+4. Inicie o servidor:
+   node server.js
+
+   Para produção (nunca para em queda):
+   npm install -g pm2
+   pm2 start server.js --name oxipress
+   pm2 save && pm2 startup
+
+5. Acesse no navegador:
+   http://SEU_IP:3000/login.html
+
+ACESSO INICIAL (admin padrão)
+──────────────────────────────
+  E-mail: admin@oxipress.com.br
+  Senha:  Admin@2024
+  ⚠️  Troque a senha imediatamente após o primeiro acesso!
+
+COMO CADASTRAR USUÁRIOS
+─────────────────────────
+  1. Faça login como admin
+  2. Menu → Usuários → Novo Usuário
+  3. Preencha nome, e-mail, setor e senha inicial
+  4. Informe a senha ao colaborador para ele fazer login
+
+CONFIGURAÇÃO DE E-MAIL (Gmail)
+────────────────────────────────
+  1. Ative verificação em 2 etapas na conta Google
+  2. Acesse: Conta Google → Segurança → Senhas de app
+  3. Crie senha de app para "Email"
+  4. Use essa senha em SMTP_PASS no .env
+
+BACKUP DOS DADOS
+─────────────────
+  Faça backup regular do arquivo: chamados.db
+  E da pasta: uploads/
+
+PÁGINAS DO SISTEMA
+───────────────────
+  /login.html  →  Login (todos os usuários)
+  /app.html    →  Portal do colaborador
+  /admin.html  →  Painel do administrador TI
+
+════════════════════════════════════════════════
