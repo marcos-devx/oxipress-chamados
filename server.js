@@ -11,7 +11,7 @@ const mailer   = require('./mailer');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── Upload ───────────────────────────────────────────────────
+// ─── Upload ───────────────────────────────────────────────────h
 const storage = multer.diskStorage({
   destination: path.join(__dirname, 'uploads'),
   filename: (_, file, cb) => cb(null, `${Date.now()}-${uuid().slice(0,8)}${path.extname(file.originalname)}`),
@@ -47,6 +47,7 @@ function notificar(usuario_id, tipo, titulo, mensagem, link='') {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
 app.use('/uploads', requireAuth, express.static(path.join(__dirname, 'uploads')));
 
 // ══════════════════════════════════════════════════════════════
