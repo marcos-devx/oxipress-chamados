@@ -71,6 +71,10 @@ function htmlResetSenha(nome, link) {
                               `);
 }
 
+function htmlNotifTecnico(c, autorNome, texto) {
+    return wrap('<h2 style="color:#7c3aed">Atualizacao - ' + c.protocolo + '</h2><p><strong>' + c.titulo + '</strong></p><p>De: <strong>' + autorNome + '</strong></p><p style="background:#f5f3ff;padding:12px;border-radius:6px">' + texto + '</p><a href="' + base + '/admin.html" style="display:inline-block;margin-top:16px;background:#7c3aed;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none">Ver no Painel</a>');
+}
+
 function wrap(content) {
     return `<div style="font-family:sans-serif;max-width:600px;margin:auto;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
     <div style="background:#1e293b;padding:16px 20px"><p style="color:#fff;margin:0;font-weight:bold">Chamados TI - Oxipress</p></div>
@@ -81,4 +85,4 @@ function wrap(content) {
 
 function corPrio(p) { return {Critica:'#dc2626',Alta:'#ea580c',Media:'#ca8a04',Baixa:'#16a34a'}[p]||'#374151'; }
 
-module.exports = { enviar, htmlNovoChamado, htmlAtualizacao, htmlConcluido, htmlResetSenha };
+module.exports = { enviar, htmlNovoChamado, htmlAtualizacao, htmlConcluido, htmlResetSenha, htmlNotifTecnico };
