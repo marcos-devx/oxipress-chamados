@@ -164,7 +164,7 @@ app.post('/api/chamados', requireAuth, (req, res) => {
   const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
   admins.forEach(a => {
     notificar(a.id,'novo_chamado',`Novo chamado: ${titulo}`,`Aberto por ${u.nome} — Prioridade: ${prioridade||'Media'}`,`/admin.html`);
-    if (process.env.EMAIL_ADMIN) mailer.enviar({ para: a.email, assunto: `[${prioridade||'Media'}] Novo chamado: ${titulo}`, html: mailer.htmlNovoChamado(chamado, u.nome) });
+    mailer.enviar({ para: a.email, assunto: `[${prioridade||'Media'}] Novo chamado: ${titulo}`, html: mailer.htmlNovoChamado(chamado, u.nome) });
   });
   res.status(201).json(chamado);
 });
@@ -241,8 +241,8 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
         .run(c.id, req.usuario.id, req.usuario.nome, 'observacao', `💬 ${observacao}`);
       db.prepare('UPDATE chamados SET atualizado_em=? WHERE id=?').run(now, c.id);
       // Notificar admin
-      const admins = db.prepare("SELECT id FROM usuarios WHERE role='admin' AND ativo=1").all();
-      admins.forEach(a => notificar(a.id,'observacao',`Obs em: ${c.titulo}`,`${req.usuario.nome} adicionou uma observação`,'/admin.html'));
+      const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
+      admins.forEach(a => { notificar(a.id,'observacao','Obs em: '+c.titulo, req.usuario.nome+' adicionou uma observacao','/admin.html'); mailer.enviar({ para: a.email, assunto: 'Obs em: '+c.titulo, html: mailer.htmlNotifTecnico(c, req.usuario.nome, observacao) }); });
     }
   }
   const atualizado = db.prepare('SELECT * FROM chamados WHERE id=?').get(c.id);
@@ -262,6 +262,8 @@ app.post('/api/chamados/:id/anexos', requireAuth, upload.single('arquivo'), (req
     .run(c.id, req.file.originalname, req.file.filename, req.file.size, req.file.mimetype);
   db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
     .run(c.id, req.usuario.id, req.usuario.nome, 'anexo', `📎 Anexo adicionado: ${req.file.originalname}`);
+      const adm2 = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
+        adm2.forEach(a => { notificar(a.id,'anexo','Anexo: '+c.titulo, req.usuario.nome+' adicionou um arquivo','/admin.html'); mailer.enviar({ para: a.email, assunto: 'Anexo: '+c.titulo, html: mailer.htmlNotifTecnico(c, req.usuario.nome, 'Arquivo: '+req.file.originalname) }); });
   res.json({ id: r.lastInsertRowid, nome_original: req.file.originalname, nome_arquivo: req.file.filename });
 });
 
@@ -302,7 +304,7 @@ app.post('/api/sugestoes', requireAuth, (req, res) => {
     .run(titulo, descricao, categoria||'Processo', req.usuario.id);
   db.prepare('INSERT INTO historico_sugestoes (sugestao_id,autor_nome,descricao) VALUES (?,?,?)')
     .run(r.lastInsertRowid, req.usuario.nome, 'Sugestão registrada');
-  const admins = db.prepare("SELECT id FROM usuarios WHERE role='admin' AND ativo=1").all();
+  const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
   admins.forEach(a => notificar(a.id,'nova_sugestao',`Nova sugestão: ${titulo}`,`Por ${req.usuario.nome}`,'/admin.html'));
   res.status(201).json({ id: r.lastInsertRowid });
 });
