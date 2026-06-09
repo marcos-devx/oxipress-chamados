@@ -437,6 +437,7 @@ app.get('/api/dashboard/sugestoes', requireAuth, requireAdmin, (req, res) => {
 });
 
 // ─── Iniciar ──────────────────────────────────────────────────
+require('./auth-reset')(app, db, agora);
 app.listen(PORT, () => {
   console.log(`\n✅ Oxipress Chamados v2 rodando em http://localhost:${PORT}`);
   console.log(`   Admin: admin@oxipress.com.br / Admin@2024\n`);
