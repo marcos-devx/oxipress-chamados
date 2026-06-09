@@ -13,7 +13,7 @@ module.exports = function(app, db, agora) {
           const expira = new Date(Date.now() + 3600000).toISOString().replace('T',' ').slice(0,19);
           db.prepare('UPDATE reset_tokens SET usado = 1 WHERE usuario_id = ?').run(u.id);
           db.prepare('INSERT INTO reset_tokens (usuario_id, token, expira_em) VALUES (?, ?, ?)').run(u.id, token, expira);
-          const link = (process.env.BASE_URL || 'http://localhost:3000') + '/reset-senha.html?token=' + token;
+          const link = (process.env.BASE_URL || ('https://'+req.get('host'))) + '/reset-senha.html?token=' + token;
           mailer.enviar({ para: u.email, assunto: 'Redefinicao de Senha - Chamados TI', html: mailer.htmlResetSenha(u.nome, link) });
           res.json({ ok: true });
     });
