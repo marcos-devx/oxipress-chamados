@@ -42,6 +42,10 @@
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
         Avaliações
       </button>
+              <button onclick="ir('concluidos')" id="nav-concluidos" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Concluídos
+                                            </button>
     </nav>
     <div class="p-3 border-t border-slate-700">
       <button onclick="logout()" class="w-full flex items-center gap-2 px-3 py-2 text-sm text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition">
@@ -246,7 +250,14 @@
       </div>
     </section>
 
-  </main>
+        <!-- CONCLUÍDOS -->
+              <section id="sec-concluidos" class="hidden p-6">
+                      <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+                                <h2 class="text-2xl font-bold text-slate-800">Chamados Concluídos</h2>
+                                        </div>
+                                                <div id="lista-concluidos-admin" class="space-y-3"></div>
+                                                      </section>
+                                                      </main>
 </div>
 
 <script>
@@ -264,7 +275,7 @@ async function api(url, opts={}) {
 function logout() { localStorage.clear(); window.location.href='/login.html'; }
 
 function ir(s) {
-  ['dashboard','chamados','usuarios','sugestoes','avaliacoes'].forEach(x=>{
+  ['dashboard','chamados','usuarios','sugestoes','avaliacoes','concluidos'].forEach(x=>{
     document.getElementById(`sec-${x}`).classList.add('hidden');
     document.getElementById(`nav-${x}`).className='nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800';
   });
@@ -275,6 +286,7 @@ function ir(s) {
   if (s==='usuarios')   carregarUsuarios();
   if (s==='sugestoes')  { document.getElementById('view-lista-s').classList.remove('hidden'); document.getElementById('view-detalhe-s').classList.add('hidden'); carregarSugestoes(); }
   if (s==='avaliacoes') carregarAvaliacoes();
+  if (s==='concluidos') carregarConcluidos();
 }
 
 async function init() {
@@ -295,10 +307,10 @@ async function carregarDashboard() {
   // KPI cards
   document.getElementById('kpi-cards').innerHTML = [
     kpi('Total',d.total,'#6366f1'),
-    kpi('Abertos',d.abertos,'#3b82f6'),
-    kpi('Andamento',d.andamento,'#f59e0b'),
-    kpi('Concluídos',d.concluidos,'#10b981'),
-    kpi('Cancelados',d.cancelados,'#6b7280'),
+    kpi('Abertos',d.abertos,'#3b82f6','Aberto'),
+    kpi('Andamento',d.andamento,'#f59e0b','Em Andamento'),
+    kpi('Concluídos',d.concluidos,'#10b981','Concluido'),
+    kpi('Cancelados',d.cancelados,'#6b7280','Cancelado'),
     kpi('Críticos',d.criticos,'#ef4444'),
     kpi('Atrasados',d.atrasados,'#dc2626'),
     kpi('Nota Média',d.avaliacao_media?`${d.avaliacao_media}⭐`:'—','#eab308'),
@@ -320,7 +332,7 @@ async function carregarDashboard() {
   destroyChart('chart-sla');
 
   new Chart(document.getElementById('chart-evolucao'), {
-    type: 'line',
+    type: 'bar',
     data: {
       labels: d.evolucao.map(e=>e.dia.slice(5)),
       datasets: [{ label:'Chamados', data: d.evolucao.map(e=>e.n), borderColor:'#6366f1', backgroundColor:'#6366f120', tension:0.3, fill:true, pointRadius:3 }]
@@ -349,7 +361,7 @@ async function carregarDashboard() {
   });
 
   new Chart(document.getElementById('chart-sla'), {
-    type: 'pie',
+    type: 'doughnut',
     data: {
       labels: ['Dentro do SLA','SLA Violado'],
       datasets: [{ data: [d.sla_cumprido, d.sla_violado], backgroundColor: ['#22c55e','#ef4444'] }]
@@ -397,8 +409,8 @@ async function carregarDashboard() {
     : '<p class="text-slate-400 text-sm">Sem avaliações.</p>';
 }
 
-function kpi(label, val, color) {
-  return `<div class="bg-white rounded-xl border border-slate-200 p-4">
+function kpi(label, val, color, filtro) {  const click = filtro ? `onclick="abrirModalStatus('${filtro}')" style="cursor:pointer"` : '';
+  return `<div class="bg-white rounded-xl border border-slate-200 p-4 hover:shadow-md transition" ${click}>
     <p class="text-xs text-slate-500 mb-1">${label}</p>
     <p class="text-2xl font-bold" style="color:${color}">${val}</p>
   </div>`;
@@ -422,7 +434,7 @@ async function carregarTodosChamados() {
   if (!lista) return;
   const el = document.getElementById('lista-admin-c');
   if (!lista.length) { el.innerHTML='<div class="text-center py-12 text-slate-400 bg-white rounded-xl border border-slate-200"><p>Nenhum chamado encontrado.</p></div>'; return; }
-  el.innerHTML = lista.map(c=>`
+  el.innerHTML = lista.filter(c=>c.status!=='Concluido').map(c=>`
     <div onclick="abrirDetalheChamado(${c.id})" class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:border-indigo-300 hover:shadow-sm transition">
       <div class="flex items-center justify-between gap-3">
         <div class="flex-1 min-w-0">
@@ -483,7 +495,7 @@ async function abrirDetalheChamado(id) {
               <select id="ed-prio" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 ${['Baixa','Media','Alta','Critica'].map(p=>`<option ${c.prioridade===p?'selected':''}>${p}</option>`).join('')}
               </select></div>
-            <div><label class="block text-xs font-medium text-slate-600 mb-1">Comentário / Ação</label>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Data Enc. (SLA)</label><input type="datetime-local" id="ed-sla" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="${c.sla_limite?c.sla_limite.replace(' ','T').slice(0,16):''}"></div><div><label class="block text-xs font-medium text-slate-600 mb-1">Comentário / Ação</label>
               <textarea id="ed-coment" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea></div>
             <button onclick="salvarChamado(${c.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition">Salvar Alterações</button>
           </div>
@@ -503,7 +515,8 @@ async function salvarChamado(id) {
   const status = document.getElementById('ed-status').value;
   const prioridade = document.getElementById('ed-prio').value;
   const comentario = document.getElementById('ed-coment').value.trim();
-  await fetch(`/api/chamados/${id}`,{method:'PUT',headers:H,body:JSON.stringify({status,prioridade,comentario})});
+        const slaManual = document.getElementById('ed-sla').value;
+  await fetch(`/api/chamados/${id}`,{method:'PUT',headers:H,body:JSON.stringify({status,prioridade,comentario,sla_manual:slaManual||undefined})});
   abrirDetalheChamado(id);
 }
 function voltarListaC() { document.getElementById('view-lista-c').classList.remove('hidden'); document.getElementById('view-detalhe-c').classList.add('hidden'); carregarTodosChamados(); }
@@ -679,7 +692,10 @@ function bs(s){return{'Aberto':'bg-blue-100 text-blue-700','Em Andamento':'bg-am
 function bp(p){return{'Critica':'bg-red-100 text-red-700','Alta':'bg-orange-100 text-orange-700','Media':'bg-yellow-100 text-yellow-700','Baixa':'bg-green-100 text-green-700'}[p]||'bg-slate-100 text-slate-700';}
 function fmtData(d){if(!d)return'';try{return new Date(d.replace(' ','T')).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return d;}}
 
+async function abrirModalStatus(filtro){const lista=await api(`/api/chamados?status=${encodeURIComponent(filtro)}`);document.getElementById('modal-status-title').textContent=filtro;document.getElementById('modal-status-body').innerHTML=lista&&lista.length?lista.map(c=>`<div class="border border-slate-200 rounded-lg p-3 cursor-pointer hover:bg-slate-50" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><p class="font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-500">#${c.protocolo} · ${c.solicitante_nome||''}</p></div>`).join(''):'<p class="text-slate-400 text-sm">Nenhum chamado.</p>';document.getElementById('modal-status').classList.remove('hidden');}
+async function carregarConcluidos(){const lista=await api('/api/chamados?status=Concluido');const el=document.getElementById('lista-concluidos-admin');if(!el)return;el.innerHTML=lista&&lista.length?lista.map(c=>`<div class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:shadow-md transition" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><div class="flex items-center gap-3 flex-wrap"><span class="text-xs font-medium text-slate-500">#${c.protocolo}</span><span class="font-medium text-slate-800">${c.titulo}</span><span class="ml-auto text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Concluído</span></div><div class="mt-1 text-xs text-slate-500">${c.setor||''} · ${c.solicitante_nome||''} · ${fmtData(c.fechado_em)||'−'}</div></div>`).join(''):'<p class="text-slate-400">Nenhum chamado concluído.</p>';}
 init();
 </script>
+<div id="modal-status" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col"><div class="flex items-center justify-between p-5 border-b border-slate-200"><h3 id="modal-status-title" class="font-semibold text-slate-800 text-lg"></h3><button onclick="document.getElementById('modal-status').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">✕</button></div><div id="modal-status-body" class="overflow-y-auto p-5 space-y-2 flex-1"></div></div></div>
 </body>
 </html>
