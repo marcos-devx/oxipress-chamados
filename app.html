@@ -4,6 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Chamados TI — Oxipress</title>
 <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <style>
   ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#f1f5f9}::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:3px}
   .nav-link{@apply flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-white hover:text-white hover:bg-slate-800;color:#fff}
@@ -32,6 +33,10 @@
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Meus Chamados
       </button>
+              <button onclick="ir('concluidos')" id="nav-concluidos" class="nav-link w-full text-left">
+                          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                    Concluídos
+                                            </button>
       <button onclick="ir('sugestoes')" id="nav-sugestoes" class="nav-link w-full text-left">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
         Sugestões
@@ -76,6 +81,10 @@
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
         Chamados
       </button>
+              <button onclick="ir('concluidos')" class="flex-1 min-w-0 py-2.5 text-xs font-medium text-slate-500 flex flex-col items-center gap-0.5" id="mnav-concluidos">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                  Concluídos
+                                          </button>
       <button onclick="ir('sugestoes')" class="flex-1 min-w-0 py-2.5 text-xs font-medium text-slate-500 flex flex-col items-center gap-0.5" id="mnav-sugestoes">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
         Sugestões
@@ -99,6 +108,16 @@
           </button>
         </div>
         <div id="cards-inicio" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                          <div class="bg-white rounded-xl border border-slate-200 p-4">
+                                      <h3 class="font-semibold text-slate-700 text-sm mb-3">Chamados por Dia (últimos 7 dias)</h3>
+                                                  <canvas id="chart-dias" height="120"></canvas>
+                                                            </div>
+                                                                      <div class="bg-white rounded-xl border border-slate-200 p-4">
+                                                                                  <h3 class="font-semibold text-slate-700 text-sm mb-3">SLA Cumprido / Violado</h3>
+                                                                                              <canvas id="chart-sla" height="120"></canvas>
+                                                                                                        </div>
+                                                                                                                </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <div class="bg-white rounded-xl border border-slate-200 p-5">
             <h3 class="font-semibold text-slate-800 mb-4">Chamados Recentes</h3>
@@ -174,8 +193,8 @@
               class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm w-40 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <select id="fil-status" onchange="carregarChamados()" class="border border-slate-300 rounded-lg px-2 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
               <option value="">Todos</option>
-              <option>Aberto</option><option>Em Andamento</option><option>Aguardando Usuario</option><option>Concluido</option><option>Cancelado</option>
-            </select>
+                          <option>Aberto</option><option>Em Andamento</option><option>Aguardando Usuario</option>
+                                      </select>
             <button onclick="mostrarFormChamado()" class="bg-blue-600 text-white text-sm px-3 py-1.5 rounded-lg hover:bg-blue-700 transition">+ Novo</button>
           </div>
         </div>
@@ -190,6 +209,17 @@
           <div id="detalhe-conteudo"></div>
         </div>
       </section>
+
+              <!-- CONCLUÍDOS -->
+                      <section id="sec-concluidos" class="hidden p-5 max-w-5xl mx-auto">
+                                <div class="flex items-center justify-between gap-3 mb-5">
+                                            <h2 class="text-lg font-semibold text-slate-800">Chamados Concluídos</h2>
+                                                        <input id="busca-conc" type="text" placeholder="Buscar..." oninput="carregarConcluidos()" class="border border-slate-300 rounded-lg px-3 py-1.5 text-sm w-44 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                                                  </div>
+                                                                            <div id="lista-concluidos" class="space-y-3"></div>
+                                                                                      <div id="detalhe-concluido" class="hidden">
+                                                                                                  <button onclick="voltarConcluidos()" class="flex items-center gap-1 text-sm text-slate-500 hover:text-blue-600 mb-4">
+                                                                                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path
 
       <!-- SUGESTÕES -->
       <section id="sec-sugestoes" class="hidden p-5 max-w-4xl mx-auto">
