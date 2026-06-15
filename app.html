@@ -279,7 +279,7 @@ function logout() { localStorage.clear(); window.location.href='/login.html'; }
 function ir(secao) {
   secaoAtual = secao;
   ['inicio','chamados','sugestoes','notificacoes','perfil'].forEach(s => {
-    document.getElementById(`sec-${s}`).classList.add('hidden');
+    const el=document.getElementById(`sec-${s}`); if(el) el.classList.add('hidden');
     const n = document.getElementById(`nav-${s}`);
     const m = document.getElementById(`mnav-${s}`);
     if (n) n.className = 'nav-link w-full text-left';
