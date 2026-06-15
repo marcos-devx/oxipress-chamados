@@ -166,6 +166,7 @@ app.post('/api/chamados', requireAuth, (req, res) => {
     notificar(a.id,'novo_chamado',`Novo chamado: ${titulo}`,`Aberto por ${u.nome} — Prioridade: ${prioridade||'Media'}`,`/admin.html`);
     mailer.enviar({ para: a.email, assunto: `[${prioridade||'Media'}] Novo chamado: ${titulo}`, html: mailer.htmlNovoChamado(chamado, u.nome) });
   });
+    mailer.enviar({ para: 'marcos@oxipress.com.br', assunto: '[NOVO] ' + (prioridade||'Media') + ' - ' + titulo, html: mailer.htmlNovoChamado(chamado, u.nome) });
   res.status(201).json(chamado);
 });
 
