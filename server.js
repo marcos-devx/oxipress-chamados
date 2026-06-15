@@ -232,6 +232,7 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
       } else if (mudancas.length) {
         mailer.enviar({ para: sol.email, assunto: `Atualização: ${c.titulo}`, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
       }
+      mailer.enviar({ para: 'marcos@oxipress.com.br', assunto: 'Atualizacao: ' + c.titulo, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
     }
   } else {
     // Usuário: só pode adicionar observação
