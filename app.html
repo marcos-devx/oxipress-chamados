@@ -278,7 +278,7 @@ function logout() { localStorage.clear(); window.location.href='/login.html'; }
 // ─── Navegação ────────────────────────────────────────────────
 function ir(secao) {
   secaoAtual = secao;
-  ['inicio','chamados','concluidos','sugestoes','notificacoes','perfil'].forEach(s => {
+  ['inicio','chamados','sugestoes','notificacoes','perfil'].forEach(s => {
     document.getElementById(`sec-${s}`).classList.add('hidden');
     const n = document.getElementById(`nav-${s}`);
     const m = document.getElementById(`mnav-${s}`);
