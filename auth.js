@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 
-const SECRET = process.env.JWT_SECRET || 'oxipress_jwt_secret_2024';
+const SECRET = process.env.JWT_SECRET;
+if (!SECRET) throw new Error('JWT_SECRET nao configurado. Defina a variavel de ambiente.');
 
 function gerarToken(usuario) {
   return jwt.sign(
