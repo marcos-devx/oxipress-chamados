@@ -166,7 +166,7 @@ app.post('/api/chamados', requireAuth, (req, res) => {
     notificar(a.id,'novo_chamado',`Novo chamado: ${titulo}`,`Aberto por ${u.nome} — Prioridade: ${prioridade||'Media'}`,`/admin.html`);
     mailer.enviar({ para: a.email, assunto: `[${prioridade||'Media'}] Novo chamado: ${titulo}`, html: mailer.htmlNovoChamado(chamado, u.nome) });
   });
-    mailer.enviar({ para: 'marcos@oxipress.com.br', assunto: '[NOVO] ' + (prioridade||'Media') + ' - ' + titulo, html: mailer.htmlNovoChamado(chamado, u.nome) });
+    mailer.enviar({ para: process.env.EMAIL_ADMIN, assunto: '[NOVO] ' + (prioridade||'Media') + ' - ' + titulo, html: mailer.htmlNovoChamado(chamado, u.nome) });
   res.status(201).json(chamado);
 });
 
@@ -233,7 +233,7 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
       } else if (mudancas.length) {
         mailer.enviar({ para: sol.email, assunto: `Atualização: ${c.titulo}`, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
       }
-      mailer.enviar({ para: 'marcos@oxipress.com.br', assunto: 'Atualizacao: ' + c.titulo, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
+      mailer.enviar({ para: process.env.EMAIL_ADMIN, assunto: 'Atualizacao: ' + c.titulo, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
     }
   } else {
     // Usuário: só pode adicionar observação
