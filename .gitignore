@@ -1,0 +1,23 @@
+# Variaveis de ambiente - NUNCA commitar
+.env
+.env.local
+.env.*.local
+
+# Banco de dados local
+*.db
+*.sqlite
+*.sqlite3
+
+# Dependencias
+node_modules/
+
+# Uploads de arquivos
+uploads/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
