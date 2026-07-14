@@ -278,11 +278,17 @@ app.post('/api/chamados/:id/avaliacao', requireAuth, (req, res) => {
   const { nota, comentario } = req.body;
   if (!nota || nota < 1 || nota > 5) return res.status(400).json({ erro: 'Nota deve ser entre 1 e 5' });
   const existe = db.prepare('SELECT id FROM avaliacoes WHERE chamado_id=?').get(c.id);
-  if (existe) return res.status(409).json({ erro: 'Chamado já avaliado' });
-  db.prepare('INSERT INTO avaliacoes (chamado_id,usuario_id,nota,comentario) VALUES (?,?,?,?)')
-    .run(c.id, req.usuario.id, nota, comentario||'');
-  db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
-    .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `⭐ Avaliação: ${nota}/5${comentario?` — "${comentario}"`:''}`)
+  if (existe) {
+    db.prepare('UPDATE avaliacoes SET nota=?, comentario=? WHERE chamado_id=?')
+      .run(nota, comentario||'', c.id);
+    db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
+      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `⭐ Avaliação atualizada: ${nota}/5${comentario?` — "${comentario}"`:''}`)
+  } else {
+    db.prepare('INSERT INTO avaliacoes (chamado_id,usuario_id,nota,comentario) VALUES (?,?,?,?)')
+      .run(c.id, req.usuario.id, nota, comentario||'');
+    db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
+      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `⭐ Avaliação: ${nota}/5${comentario?` — "${comentario}"`:''}`)
+  }
   res.json({ ok: true });
 });
 
