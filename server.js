@@ -257,7 +257,7 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
 // âââ Upload de anexo ââââââââââââââââââââââââââââââââââââââââââ
 app.post('/api/chamados/:id/anexos', requireAuth, upload.single('arquivo'), (req, res) => {
   const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
-  if (!c) return res.status(404).json({ erro: 'Chamado nÃ£o encontrado  });
+  if (!c) return res.status(404).json({ erro: 'Chamado não encontrado' });
   if (req.usuario.role!=='admin' && c.solicitante_id!==req.usuario.id) return res.status(403).json({ erro: 'Acesso negado' });
   if (!req.file) return res.status(400).json({ erro: 'Nenhum arquivo enviado' });
   const r = db.prepare('INSERT INTO anexos (chamado_id,nome_original,nome_arquivo,tamanho,mime_type) VALUES (?,?,?,?,?)')
