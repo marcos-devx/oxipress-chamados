@@ -11,14 +11,14 @@ const mailer   = require('./mailer');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-// ─── Upload ───────────────────────────────────────────────────h
+// âââ Upload âââââââââââââââââââââââââââââââââââââââââââââââââââh
 const storage = multer.diskStorage({
   destination: path.join(__dirname, 'uploads'),
   filename: (_, file, cb) => cb(null, `${Date.now()}-${uuid().slice(0,8)}${path.extname(file.originalname)}`),
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
-// ─── Helpers ──────────────────────────────────────────────────
+// âââ Helpers ââââââââââââââââââââââââââââââââââââââââââââââââââ
 const SLA_HORAS = { Critica: 2, Alta: 4, Media: 24, Baixa: 72 };
 
 function slaLimite(prioridade, base) {
@@ -43,7 +43,7 @@ function notificar(usuario_id, tipo, titulo, mensagem, link='') {
   } catch {}
 }
 
-// ─── Middlewares ──────────────────────────────────────────────
+// âââ Middlewares ââââââââââââââââââââââââââââââââââââââââââââââ
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -53,16 +53,16 @@ app.use('/uploads', requireAuth, express.static(path.join(__dirname, 'uploads'))
 // Rota raiz -> redireciona para login // trigger deploy
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'login.html')));
 
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 //  AUTH
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.post('/api/auth/login', (req, res) => {
   const { email, senha } = req.body;
-  if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha obrigatórios' });
+  if (!email || !senha) return res.status(400).json({ erro: 'E-mail e senha obrigatÃ³rios' });
   const u = db.prepare('SELECT * FROM usuarios WHERE email = ?').get(email.toLowerCase().trim());
   if (!u || !bcrypt.compareSync(senha, u.senha_hash))
-    return res.status(401).json({ erro: 'E-mail ou senha inválidos' });
-  if (!u.ativo) return res.status(403).json({ erro: 'Usuário bloqueado. Contate o administrador.' });
+    return res.status(401).json({ erro: 'E-mail ou senha invÃ¡lidos' });
+  if (!u.ativo) return res.status(403).json({ erro: 'UsuÃ¡rio bloqueado. Contate o administrador.' });
   db.prepare('UPDATE usuarios SET ultimo_acesso = ? WHERE id = ?').run(agora(), u.id);
   const token = gerarToken(u);
   res.json({ token, usuario: { id:u.id, nome:u.nome, email:u.email, setor:u.setor, cargo:u.cargo, role:u.role } });
@@ -82,18 +82,18 @@ app.put('/api/auth/senha', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
-// ══════════════════════════════════════════════════════════════
-//  USUÁRIOS (admin)
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+//  USUÃRIOS (admin)
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/usuarios', requireAuth, requireAdmin, (req, res) => {
   res.json(db.prepare('SELECT id,nome,email,setor,cargo,role,ativo,criado_em,ultimo_acesso FROM usuarios ORDER BY nome').all());
 });
 
 app.post('/api/usuarios', requireAuth, requireAdmin, (req, res) => {
   const { nome, email, senha, setor, cargo, role } = req.body;
-  if (!nome || !email || !senha || !setor) return res.status(400).json({ erro: 'Campos obrigatórios: nome, email, senha, setor' });
+  if (!nome || !email || !senha || !setor) return res.status(400).json({ erro: 'Campos obrigatÃ³rios: nome, email, senha, setor' });
   if (db.prepare('SELECT id FROM usuarios WHERE email=?').get(email.toLowerCase()))
-    return res.status(409).json({ erro: 'E-mail já cadastrado' });
+    return res.status(409).json({ erro: 'E-mail jÃ¡ cadastrado' });
   const r = db.prepare('INSERT INTO usuarios (nome,email,senha_hash,setor,cargo,role) VALUES (?,?,?,?,?,?)')
     .run(nome.trim(), email.toLowerCase().trim(), bcrypt.hashSync(senha, 10), setor, cargo||'', role||'usuario');
   res.status(201).json({ id: r.lastInsertRowid });
@@ -102,7 +102,7 @@ app.post('/api/usuarios', requireAuth, requireAdmin, (req, res) => {
 app.put('/api/usuarios/:id', requireAuth, requireAdmin, (req, res) => {
   const { nome, email, senha, setor, cargo, role, ativo } = req.body;
   const u = db.prepare('SELECT * FROM usuarios WHERE id=?').get(req.params.id);
-  if (!u) return res.status(404).json({ erro: 'Usuário não encontrado' });
+  if (!u) return res.status(404).json({ erro: 'UsuÃ¡rio nÃ£o encontrado' });
   const senhaHash = senha ? bcrypt.hashSync(senha, 10) : u.senha_hash;
   db.prepare('UPDATE usuarios SET nome=?,email=?,senha_hash=?,setor=?,cargo=?,role=?,ativo=? WHERE id=?')
     .run(nome||u.nome, (email||u.email).toLowerCase(), senhaHash, setor||u.setor, cargo??u.cargo, role||u.role, ativo??u.ativo, u.id);
@@ -110,14 +110,14 @@ app.put('/api/usuarios/:id', requireAuth, requireAdmin, (req, res) => {
 });
 
 app.delete('/api/usuarios/:id', requireAuth, requireAdmin, (req, res) => {
-  if (parseInt(req.params.id) === req.usuario.id) return res.status(400).json({ erro: 'Não é possível remover a si mesmo' });
+  if (parseInt(req.params.id) === req.usuario.id) return res.status(400).json({ erro: 'NÃ£o Ã© possÃ­vel remover a si mesmo' });
   db.prepare('UPDATE usuarios SET ativo=0 WHERE id=?').run(req.params.id);
   res.json({ ok: true });
 });
 
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 //  CHAMADOS
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/chamados', requireAuth, (req, res) => {
   const { status, prioridade, setor, categoria, responsavel, busca, periodo, atrasados } = req.query;
   let q = `SELECT c.*,
@@ -149,7 +149,7 @@ app.get('/api/chamados', requireAuth, (req, res) => {
 
 app.post('/api/chamados', requireAuth, (req, res) => {
   const { titulo, descricao, categoria, prioridade, observacoes } = req.body;
-  if (!titulo||!descricao||!categoria) return res.status(400).json({ erro: 'Campos obrigatórios: titulo, descricao, categoria' });
+  if (!titulo||!descricao||!categoria) return res.status(400).json({ erro: 'Campos obrigatÃ³rios: titulo, descricao, categoria' });
   const u = db.prepare('SELECT * FROM usuarios WHERE id=?').get(req.usuario.id);
   const protocolo = gerarProtocolo();
   const sla = slaLimite(prioridade||'Media');
@@ -163,7 +163,7 @@ app.post('/api/chamados', requireAuth, (req, res) => {
   // Notificar admin
   const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
   admins.forEach(a => {
-    notificar(a.id,'novo_chamado',`Novo chamado: ${titulo}`,`Aberto por ${u.nome} — Prioridade: ${prioridade||'Media'}`,`/admin.html`);
+    notificar(a.id,'novo_chamado',`Novo chamado: ${titulo}`,`Aberto por ${u.nome} â Prioridade: ${prioridade||'Media'}`,`/admin.html`);
     mailer.enviar({ para: a.email, assunto: `[${prioridade||'Media'}] Novo chamado: ${titulo}`, html: mailer.htmlNovoChamado(chamado, u.nome) });
   });
     mailer.enviar({ para: process.env.EMAIL_ADMIN, assunto: '[NOVO] ' + (prioridade||'Media') + ' - ' + titulo, html: mailer.htmlNovoChamado(chamado, u.nome) });
@@ -175,7 +175,7 @@ app.get('/api/chamados/:id', requireAuth, (req, res) => {
     u2.nome as responsavel_nome FROM chamados c
     JOIN usuarios u1 ON c.solicitante_id=u1.id LEFT JOIN usuarios u2 ON c.responsavel_id=u2.id
     WHERE c.id=?`).get(req.params.id);
-  if (!c) return res.status(404).json({ erro: 'Não encontrado' });
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
   if (req.usuario.role!=='admin' && c.solicitante_id!==req.usuario.id)
     return res.status(403).json({ erro: 'Acesso negado' });
   const historico = db.prepare('SELECT * FROM historico_chamados WHERE chamado_id=? ORDER BY criado_em ASC').all(c.id);
@@ -186,7 +186,7 @@ app.get('/api/chamados/:id', requireAuth, (req, res) => {
 
 app.put('/api/chamados/:id', requireAuth, (req, res) => {
   const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
-  if (!c) return res.status(404).json({ erro: 'Não encontrado' });
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
   if (req.usuario.role!=='admin' && c.solicitante_id!==req.usuario.id)
     return res.status(403).json({ erro: 'Acesso negado' });
 
@@ -199,14 +199,14 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
     let primeiro_atendimento_em = c.primeiro_atendimento_em;
 
     if (status && status !== c.status) {
-      mudancas.push(`Status: "${c.status}" → "${status}"`);
+      mudancas.push(`Status: "${c.status}" â "${status}"`);
       if (status==='Em Andamento' && !c.primeiro_atendimento_em) primeiro_atendimento_em = now;
       if (status==='Concluido'||status==='Cancelado') fechado_em = now;
     }
-    if (prioridade && prioridade!==c.prioridade) mudancas.push(`Prioridade: "${c.prioridade}" → "${prioridade}"`);
+    if (prioridade && prioridade!==c.prioridade) mudancas.push(`Prioridade: "${c.prioridade}" â "${prioridade}"`);
     if (responsavel_id !== undefined) {
       const resp = responsavel_id ? db.prepare('SELECT nome FROM usuarios WHERE id=?').get(responsavel_id) : null;
-      if (resp) mudancas.push(`Responsável: ${resp.nome}`);
+      if (resp) mudancas.push(`ResponsÃ¡vel: ${resp.nome}`);
     }
     if (comentario) mudancas.push(comentario);
 
@@ -229,18 +229,18 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
       const chamadoAtualizado = db.prepare('SELECT * FROM chamados WHERE id=?').get(c.id);
       const hist = { descricao: mudancas.join(' | ') };
       if (status==='Concluido') {
-        mailer.enviar({ para: sol.email, assunto: `✅ Chamado concluído: ${c.titulo}`, html: mailer.htmlConcluido(chamadoAtualizado) });
+        mailer.enviar({ para: sol.email, assunto: `â Chamado concluÃ­do: ${c.titulo}`, html: mailer.htmlConcluido(chamadoAtualizado) });
       } else if (mudancas.length) {
-        mailer.enviar({ para: sol.email, assunto: `Atualização: ${c.titulo}`, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
+        mailer.enviar({ para: sol.email, assunto: `AtualizaÃ§Ã£o: ${c.titulo}`, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
       }
       mailer.enviar({ para: process.env.EMAIL_ADMIN, assunto: 'Atualizacao: ' + c.titulo, html: mailer.htmlAtualizacao(chamadoAtualizado, hist) });
     }
   } else {
-    // Usuário: só pode adicionar observação
+    // UsuÃ¡rio: sÃ³ pode adicionar observaÃ§Ã£o
     const { observacao } = req.body;
     if (observacao) {
       db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
-        .run(c.id, req.usuario.id, req.usuario.nome, 'observacao', `💬 ${observacao}`);
+        .run(c.id, req.usuario.id, req.usuario.nome, 'observacao', `ð¬ ${observacao}`);
       db.prepare('UPDATE chamados SET atualizado_em=? WHERE id=?').run(now, c.id);
       // Notificar admin
       const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
@@ -254,27 +254,27 @@ app.put('/api/chamados/:id', requireAuth, (req, res) => {
   res.json({ ...atualizado, historico, anexos, avaliacao });
 });
 
-// ─── Upload de anexo ──────────────────────────────────────────
+// âââ Upload de anexo ââââââââââââââââââââââââââââââââââââââââââ
 app.post('/api/chamados/:id/anexos', requireAuth, upload.single('arquivo'), (req, res) => {
   const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
-  if (!c) return res.status(404).json({ erro: 'Chamado não encontrado' });
+  if (!c) return res.status(404).json({ erro: 'Chamado nÃ£o encontrado  });
   if (req.usuario.role!=='admin' && c.solicitante_id!==req.usuario.id) return res.status(403).json({ erro: 'Acesso negado' });
   if (!req.file) return res.status(400).json({ erro: 'Nenhum arquivo enviado' });
   const r = db.prepare('INSERT INTO anexos (chamado_id,nome_original,nome_arquivo,tamanho,mime_type) VALUES (?,?,?,?,?)')
     .run(c.id, req.file.originalname, req.file.filename, req.file.size, req.file.mimetype);
   db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
-    .run(c.id, req.usuario.id, req.usuario.nome, 'anexo', `📎 Anexo adicionado: ${req.file.originalname}`);
+    .run(c.id, req.usuario.id, req.usuario.nome, 'anexo', `ð Anexo adicionado: ${req.file.originalname}`);
       const adm2 = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
         adm2.forEach(a => { notificar(a.id,'anexo','Anexo: '+c.titulo, req.usuario.nome+' adicionou um arquivo','/admin.html'); mailer.enviar({ para: a.email, assunto: 'Anexo: '+c.titulo, html: mailer.htmlNotifTecnico(c, req.usuario.nome, 'Arquivo: '+req.file.originalname) }); });
   res.json({ id: r.lastInsertRowid, nome_original: req.file.originalname, nome_arquivo: req.file.filename });
 });
 
-// ─── Avaliação ────────────────────────────────────────────────
+// âââ AvaliaÃ§Ã£o ââââââââââââââââââââââââââââââââââââââââââââââââ
 app.post('/api/chamados/:id/avaliacao', requireAuth, (req, res) => {
   const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
-  if (!c) return res.status(404).json({ erro: 'Não encontrado' });
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
   if (c.solicitante_id !== req.usuario.id) return res.status(403).json({ erro: 'Acesso negado' });
-  if (c.status !== 'Concluido') return res.status(400).json({ erro: 'Só é possível avaliar chamados concluídos' });
+  if (c.status !== 'Concluido') return res.status(400).json({ erro: 'SÃ³ Ã© possÃ­vel avaliar chamados concluÃ­dos' });
   const { nota, comentario } = req.body;
   if (!nota || nota < 1 || nota > 5) return res.status(400).json({ erro: 'Nota deve ser entre 1 e 5' });
   const existe = db.prepare('SELECT id FROM avaliacoes WHERE chamado_id=?').get(c.id);
@@ -282,19 +282,58 @@ app.post('/api/chamados/:id/avaliacao', requireAuth, (req, res) => {
     db.prepare('UPDATE avaliacoes SET nota=?, comentario=? WHERE chamado_id=?')
       .run(nota, comentario||'', c.id);
     db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
-      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `⭐ Avaliação atualizada: ${nota}/5${comentario?` — "${comentario}"`:''}`)
+      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `â­ AvaliaÃ§Ã£o atualizada: ${nota}/5${comentario?` â "${comentario}"`:''}`)
   } else {
     db.prepare('INSERT INTO avaliacoes (chamado_id,usuario_id,nota,comentario) VALUES (?,?,?,?)')
       .run(c.id, req.usuario.id, nota, comentario||'');
     db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
-      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `⭐ Avaliação: ${nota}/5${comentario?` — "${comentario}"`:''}`)
+      .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `â­ AvaliaÃ§Ã£o: ${nota}/5${comentario?` â "${comentario}"`:''}`)
   }
   res.json({ ok: true });
 });
 
-// ══════════════════════════════════════════════════════════════
-//  SUGESTÕES
-// ══════════════════════════════════════════════════════════════
+// Admin: editar avaliaÃ§Ã£o (ignora solicitante e status)
+app.put('/api/chamados/:id/avaliacao', requireAuth, requireAdmin, (req, res) => {
+  const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
+  const { nota, comentario } = req.body;
+  if (!nota || nota < 1 || nota > 5) return res.status(400).json({ erro: 'Nota deve ser entre 1 e 5' });
+  const existe = db.prepare('SELECT id FROM avaliacoes WHERE chamado_id=?').get(c.id);
+  if (existe) {
+    db.prepare('UPDATE avaliacoes SET nota=?, comentario=? WHERE chamado_id=?').run(nota, comentario||'', c.id);
+  } else {
+    db.prepare('INSERT INTO avaliacoes (chamado_id,usuario_id,nota,comentario) VALUES (?,?,?,?)').run(c.id, req.usuario.id, nota, comentario||'');
+  }
+  db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
+    .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', `â­ AvaliaÃ§Ã£o editada pelo admin: ${nota}/5${comentario?` â "${comentario}"`:''}`)
+  res.json({ ok: true });
+});
+
+// Admin: remover avaliaÃ§Ã£o
+app.delete('/api/chamados/:id/avaliacao', requireAuth, requireAdmin, (req, res) => {
+  const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
+  db.prepare('DELETE FROM avaliacoes WHERE chamado_id=?').run(c.id);
+  db.prepare('INSERT INTO historico_chamados (chamado_id,autor_id,autor_nome,tipo,descricao) VALUES (?,?,?,?,?)')
+    .run(c.id, req.usuario.id, req.usuario.nome, 'avaliacao', 'ðï¸ AvaliaÃ§Ã£o removida pelo administrador');
+  res.json({ ok: true });
+});
+
+// Admin: excluir chamado (qualquer status)
+app.delete('/api/chamados/:id', requireAuth, requireAdmin, (req, res) => {
+  const c = db.prepare('SELECT * FROM chamados WHERE id=?').get(req.params.id);
+  if (!c) return res.status(404).json({ erro: 'NÃ£o encontrado' });
+  db.prepare('DELETE FROM avaliacoes WHERE chamado_id=?').run(c.id);
+  db.prepare('DELETE FROM historico_chamados WHERE chamado_id=?').run(c.id);
+  db.prepare('DELETE FROM anexos WHERE chamado_id=?').run(c.id);
+  db.prepare("DELETE FROM notificacoes WHERE link LIKE ?").run(`%chamados%${c.id}%`);
+  db.prepare('DELETE FROM chamados WHERE id=?').run(c.id);
+  res.json({ ok: true });
+});
+
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+//  SUGESTÃES
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/sugestoes', requireAuth, (req, res) => {
   let q = `SELECT s.*,u.nome as autor_nome,u.setor as autor_setor FROM sugestoes s
     JOIN usuarios u ON s.autor_id=u.id WHERE 1=1`;
@@ -307,19 +346,19 @@ app.get('/api/sugestoes', requireAuth, (req, res) => {
 
 app.post('/api/sugestoes', requireAuth, (req, res) => {
   const { titulo, descricao, categoria } = req.body;
-  if (!titulo||!descricao) return res.status(400).json({ erro: 'Título e descrição obrigatórios' });
+  if (!titulo||!descricao) return res.status(400).json({ erro: 'TÃ­tulo e descriÃ§Ã£o obrigatÃ³rios' });
   const r = db.prepare('INSERT INTO sugestoes (titulo,descricao,categoria,autor_id) VALUES (?,?,?,?)')
     .run(titulo, descricao, categoria||'Processo', req.usuario.id);
   db.prepare('INSERT INTO historico_sugestoes (sugestao_id,autor_nome,descricao) VALUES (?,?,?)')
-    .run(r.lastInsertRowid, req.usuario.nome, 'Sugestão registrada');
+    .run(r.lastInsertRowid, req.usuario.nome, 'SugestÃ£o registrada');
   const admins = db.prepare("SELECT id,email FROM usuarios WHERE role='admin' AND ativo=1").all();
-  admins.forEach(a => notificar(a.id,'nova_sugestao',`Nova sugestão: ${titulo}`,`Por ${req.usuario.nome}`,'/admin.html'));
+  admins.forEach(a => notificar(a.id,'nova_sugestao',`Nova sugestÃ£o: ${titulo}`,`Por ${req.usuario.nome}`,'/admin.html'));
   res.status(201).json({ id: r.lastInsertRowid });
 });
 
 app.get('/api/sugestoes/:id', requireAuth, (req, res) => {
   const s = db.prepare('SELECT s.*,u.nome as autor_nome,u.setor as autor_setor FROM sugestoes s JOIN usuarios u ON s.autor_id=u.id WHERE s.id=?').get(req.params.id);
-  if (!s) return res.status(404).json({ erro: 'Não encontrado' });
+  if (!s) return res.status(404).json({ erro: 'NÃ£o encontrado' });
   if (req.usuario.role!=='admin' && s.autor_id!==req.usuario.id) return res.status(403).json({ erro: 'Acesso negado' });
   const historico = db.prepare('SELECT * FROM historico_sugestoes WHERE sugestao_id=? ORDER BY criado_em ASC').all(s.id);
   res.json({ ...s, historico });
@@ -327,23 +366,23 @@ app.get('/api/sugestoes/:id', requireAuth, (req, res) => {
 
 app.put('/api/sugestoes/:id', requireAuth, requireAdmin, (req, res) => {
   const s = db.prepare('SELECT * FROM sugestoes WHERE id=?').get(req.params.id);
-  if (!s) return res.status(404).json({ erro: 'Não encontrado' });
+  if (!s) return res.status(404).json({ erro: 'NÃ£o encontrado' });
   const { status, comentario } = req.body;
   const mudancas = [];
-  if (status && status!==s.status) mudancas.push(`Status: "${s.status}" → "${status}"`);
+  if (status && status!==s.status) mudancas.push(`Status: "${s.status}" â "${status}"`);
   if (comentario) mudancas.push(comentario);
   db.prepare('UPDATE sugestoes SET status=?,atualizado_em=? WHERE id=?').run(status||s.status, agora(), s.id);
   if (mudancas.length) {
     db.prepare('INSERT INTO historico_sugestoes (sugestao_id,autor_nome,descricao) VALUES (?,?,?)')
       .run(s.id, req.usuario.nome, mudancas.join(' | '));
-    notificar(s.autor_id,'sugestao_atualizada',`Sugestão atualizada: ${s.titulo}`,mudancas.join('. '),'/app.html');
+    notificar(s.autor_id,'sugestao_atualizada',`SugestÃ£o atualizada: ${s.titulo}`,mudancas.join('. '),'/app.html');
   }
   res.json({ ok: true });
 });
 
-// ══════════════════════════════════════════════════════════════
-//  NOTIFICAÇÕES
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
+//  NOTIFICAÃÃES
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/notificacoes', requireAuth, (req, res) => {
   const n = db.prepare('SELECT * FROM notificacoes WHERE usuario_id=? ORDER BY criado_em DESC LIMIT 50').all(req.usuario.id);
   const nao_lidas = db.prepare('SELECT COUNT(*) as n FROM notificacoes WHERE usuario_id=? AND lida=0').get(req.usuario.id).n;
@@ -355,9 +394,9 @@ app.put('/api/notificacoes/marcar-lidas', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 //  DASHBOARD (admin)
-// ══════════════════════════════════════════════════════════════
+// ââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââââ
 app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
   const periodo = req.query.periodo || 'mes';
   const filtros = {
@@ -377,11 +416,11 @@ app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
   const criticos   = db.prepare(`SELECT COUNT(*) as n FROM chamados c WHERE prioridade='Critica' AND status NOT IN ('Concluido','Cancelado')`).get().n;
   const atrasados  = db.prepare(`SELECT COUNT(*) as n FROM chamados c WHERE status NOT IN ('Concluido','Cancelado') AND sla_limite < datetime('now','localtime')`).get().n;
 
-  // Tempo médio de atendimento (abertura → primeiro_atendimento_em) em horas
+  // Tempo mÃ©dio de atendimento (abertura â primeiro_atendimento_em) em horas
   const tma_row = db.prepare(`SELECT AVG((julianday(primeiro_atendimento_em)-julianday(criado_em))*24) as v FROM chamados c WHERE primeiro_atendimento_em IS NOT NULL AND ${filtro}`).get();
   const tma = tma_row.v ? parseFloat(tma_row.v.toFixed(1)) : null;
 
-  // Tempo médio de resolução (abertura → fechado_em) em horas
+  // Tempo mÃ©dio de resoluÃ§Ã£o (abertura â fechado_em) em horas
   const tmr_row = db.prepare(`SELECT AVG((julianday(fechado_em)-julianday(criado_em))*24) as v FROM chamados c WHERE fechado_em IS NOT NULL AND status='Concluido' AND ${filtro}`).get();
   const tmr = tmr_row.v ? parseFloat(tmr_row.v.toFixed(1)) : null;
 
@@ -389,7 +428,7 @@ app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
   const sla_cumprido  = db.prepare(`SELECT COUNT(*) as n FROM chamados c WHERE status='Concluido' AND fechado_em <= sla_limite AND ${filtro}`).get().n;
   const sla_violado   = db.prepare(`SELECT COUNT(*) as n FROM chamados c WHERE status='Concluido' AND fechado_em > sla_limite AND ${filtro}`).get().n;
 
-  // Avaliação média
+  // AvaliaÃ§Ã£o mÃ©dia
   const avaliacao_row = db.prepare(`SELECT AVG(a.nota) as v, COUNT(*) as n FROM avaliacoes a JOIN chamados c ON a.chamado_id=c.id WHERE ${filtro}`).get();
   const avaliacao_media = avaliacao_row.v ? parseFloat(avaliacao_row.v.toFixed(1)) : null;
 
@@ -402,13 +441,13 @@ app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
   // Por prioridade
   const por_prioridade = db.prepare(`SELECT prioridade, COUNT(*) as n FROM chamados c WHERE ${filtro} GROUP BY prioridade ORDER BY n DESC`).all();
 
-  // Por usuário (top 10)
+  // Por usuÃ¡rio (top 10)
   const por_usuario = db.prepare(`SELECT u.nome, u.setor, COUNT(*) as n FROM chamados c JOIN usuarios u ON c.solicitante_id=u.id WHERE ${filtro} GROUP BY c.solicitante_id ORDER BY n DESC LIMIT 10`).all();
 
-  // Evolução por dia (últimos 30 dias)
+  // EvoluÃ§Ã£o por dia (Ãºltimos 30 dias)
   const evolucao = db.prepare(`SELECT date(criado_em) as dia, COUNT(*) as n FROM chamados WHERE criado_em >= datetime('now','localtime','-30 days') GROUP BY dia ORDER BY dia`).all();
 
-  // Chamados recorrentes (mesmo setor + mesma categoria, >= 3 ocorrências no período)
+  // Chamados recorrentes (mesmo setor + mesma categoria, >= 3 ocorrÃªncias no perÃ­odo)
   const recorrentes = db.prepare(`SELECT setor, categoria, COUNT(*) as n FROM chamados c WHERE ${filtro} GROUP BY setor,categoria HAVING n >= 3 ORDER BY n DESC LIMIT 10`).all();
 
   // Ranking setores
@@ -422,7 +461,7 @@ app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
     JOIN usuarios u ON c.solicitante_id=u.id WHERE c.status NOT IN ('Concluido','Cancelado') AND c.sla_limite < datetime('now','localtime')
     ORDER BY c.sla_limite ASC LIMIT 20`).all();
 
-  // Avaliações recentes
+  // AvaliaÃ§Ãµes recentes
   const avaliacoes_recentes = db.prepare(`SELECT a.*,u.nome as usuario_nome,c.titulo as chamado_titulo,c.protocolo FROM avaliacoes a
     JOIN usuarios u ON a.usuario_id=u.id JOIN chamados c ON a.chamado_id=c.id ORDER BY a.criado_em DESC LIMIT 10`).all();
 
@@ -435,20 +474,20 @@ app.get('/api/dashboard/stats', requireAuth, requireAdmin, (req, res) => {
   });
 });
 
-// Sugestões stats
+// SugestÃµes stats
 app.get('/api/dashboard/sugestoes', requireAuth, requireAdmin, (req, res) => {
   const total    = db.prepare("SELECT COUNT(*) as n FROM sugestoes").get().n;
   const abertas  = db.prepare("SELECT COUNT(*) as n FROM sugestoes WHERE status='Aberta'").get().n;
-  const analise  = db.prepare("SELECT COUNT(*) as n FROM sugestoes WHERE status='Em Análise'").get().n;
+  const analise  = db.prepare("SELECT COUNT(*) as n FROM sugestoes WHERE status='Em AnÃ¡lise'").get().n;
   const aprovadas= db.prepare("SELECT COUNT(*) as n FROM sugestoes WHERE status='Aprovada'").get().n;
   const implantadas = db.prepare("SELECT COUNT(*) as n FROM sugestoes WHERE status='Implementada'").get().n;
   const recentes = db.prepare("SELECT s.*,u.nome as autor_nome,u.setor as autor_setor FROM sugestoes s JOIN usuarios u ON s.autor_id=u.id ORDER BY s.criado_em DESC LIMIT 10").all();
   res.json({ total, abertas, analise, aprovadas, implantadas, recentes });
 });
 
-// ─── Iniciar ──────────────────────────────────────────────────
+// âââ Iniciar ââââââââââââââââââââââââââââââââââââââââââââââââââ
 require('./auth-reset')(app, db, agora);
 app.listen(PORT, () => {
-  console.log(`\n✅ Oxipress Chamados v2 rodando em http://localhost:${PORT}`);
+  console.log(`\nâ Oxipress Chamados v2 rodando em http://localhost:${PORT}`);
   console.log(`   Admin: admin@oxipress.com.br / Admin@2024\n`);
 });
