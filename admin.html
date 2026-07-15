@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin â Chamados TI Oxipress</title>
+<title>Admin — Chamados TI Oxipress</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#0f172a}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}</style>
@@ -17,7 +17,7 @@
         <div class="w-9 h-9 bg-indigo-600 rounded-lg flex-shrink-0 flex items-center justify-center">
           <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
         </div>
-        <div><p class="font-bold text-white text-sm">Painel Admin</p><p class="text-xs text-slate-400">TI â Oxipress</p></div>
+        <div><p class="font-bold text-white text-sm">Painel Admin</p><p class="text-xs text-slate-400">TI — Oxipress</p></div>
       </div>
     </div>
     <nav class="flex-1 p-3 space-y-1 overflow-y-auto">
@@ -32,19 +32,19 @@
       </button>
       <button onclick="ir('usuarios')" id="nav-usuarios" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-        UsuÃ¡rios
+        Usuários
       </button>
       <button onclick="ir('sugestoes')" id="nav-sugestoes" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-        SugestÃµes
+        Sugestões
       </button>
       <button onclick="ir('avaliacoes')" id="nav-avaliacoes" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-        AvaliaÃ§Ãµes
+        Avaliações
       </button>
               <button onclick="ir('concluidos')" id="nav-concluidos" class="nav w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-medium transition text-slate-400 hover:text-white hover:bg-slate-800">
                           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                                    ConcluÃ­dos
+                                    Concluídos
                                             </button>
     </nav>
     <div class="p-3 border-t border-slate-700">
@@ -58,15 +58,15 @@
   <!-- Main -->
   <main class="flex-1 overflow-auto">
 
-    <!-- âââ DASHBOARD âââ -->
+    <!-- ─── DASHBOARD ─── -->
     <section id="sec-dashboard" class="p-6">
       <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
-        <div><h2 class="text-2xl font-bold text-slate-800">Dashboard</h2><p class="text-slate-500 text-sm">VisÃ£o geral da operaÃ§Ã£o</p></div>
+        <div><h2 class="text-2xl font-bold text-slate-800">Dashboard</h2><p class="text-slate-500 text-sm">Visão geral da operação</p></div>
         <div class="flex gap-2">
           <select id="periodo-dash" onchange="carregarDashboard()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
             <option value="hoje">Hoje</option>
-            <option value="semana">Ãltimos 7 dias</option>
-            <option value="mes" selected>Ãltimos 30 dias</option>
+            <option value="semana">Últimos 7 dias</option>
+            <option value="mes" selected>Últimos 30 dias</option>
             <option value="ano">Este ano</option>
             <option value="tudo">Tudo</option>
           </select>
@@ -79,7 +79,7 @@
       <!-- Charts row 1 -->
       <div class="grid grid-cols-1 xl:grid-cols-3 gap-5 mb-5">
         <div class="xl:col-span-2 bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">Chamados por Dia (Ãºltimos 30 dias)</h3>
+          <h3 class="font-semibold text-slate-800 mb-4">Chamados por Dia (últimos 30 dias)</h3>
           <canvas id="chart-evolucao" height="120"></canvas>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
@@ -95,11 +95,11 @@
           <canvas id="chart-cat" height="200"></canvas>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">ð Ranking de Setores</h3>
+          <h3 class="font-semibold text-slate-800 mb-4">🏆 Ranking de Setores</h3>
           <div id="ranking-setores" class="space-y-2"></div>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">ð Top UsuÃ¡rios</h3>
+          <h3 class="font-semibold text-slate-800 mb-4">📋 Top Usuários</h3>
           <div id="top-usuarios" class="space-y-2"></div>
         </div>
       </div>
@@ -107,31 +107,31 @@
       <!-- Row 3: Recorrentes + Atrasados + SLA -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-1">ð Chamados Recorrentes</h3>
-          <p class="text-xs text-slate-500 mb-3">Setor+Categoria com 3 ou mais ocorrÃªncias</p>
+          <h3 class="font-semibold text-slate-800 mb-1">🔁 Chamados Recorrentes</h3>
+          <p class="text-xs text-slate-500 mb-3">Setor+Categoria com 3 ou mais ocorrências</p>
           <div id="recorrentes-list" class="space-y-2"></div>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-1">â ï¸ Chamados em Atraso</h3>
-          <p class="text-xs text-slate-500 mb-3">SLA vencido, ainda nÃ£o resolvidos</p>
+          <h3 class="font-semibold text-slate-800 mb-1">⚠️ Chamados em Atraso</h3>
+          <p class="text-xs text-slate-500 mb-3">SLA vencido, ainda não resolvidos</p>
           <div id="atrasados-list" class="space-y-2"></div>
         </div>
       </div>
 
-      <!-- SLA + AvaliaÃ§Ã£o -->
+      <!-- SLA + Avaliação -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">SLA â Cumprimento</h3>
+          <h3 class="font-semibold text-slate-800 mb-4">SLA — Cumprimento</h3>
           <canvas id="chart-sla" height="160"></canvas>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">AvaliaÃ§Ãµes Recentes</h3>
+          <h3 class="font-semibold text-slate-800 mb-4">Avaliações Recentes</h3>
           <div id="aval-recentes" class="space-y-3"></div>
         </div>
       </div>
     </section>
 
-    <!-- âââ CHAMADOS âââ -->
+    <!-- ─── CHAMADOS ─── -->
     <section id="sec-chamados" class="hidden p-6">
       <!-- Lista -->
       <div id="view-lista-c">
@@ -154,12 +154,12 @@
               <option>Critica</option><option>Alta</option><option>Media</option><option>Baixa</option>
             </select>
             <select id="a-periodo" onchange="carregarTodosChamados()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none">
-              <option value="">PerÃ­odo</option>
-              <option value="hoje">Hoje</option><option value="semana">Semana</option><option value="mes">MÃªs</option><option value="ano">Ano</option>
+              <option value="">Período</option>
+              <option value="hoje">Hoje</option><option value="semana">Semana</option><option value="mes">Mês</option><option value="ano">Ano</option>
             </select>
             <label class="flex items-center gap-2 text-sm text-slate-600 cursor-pointer">
               <input type="checkbox" id="a-atrasados" onchange="carregarTodosChamados()" class="rounded">
-              SÃ³ atrasados
+              Só atrasados
             </label>
           </div>
         </div>
@@ -175,18 +175,18 @@
       </div>
     </section>
 
-    <!-- âââ USUÃRIOS âââ -->
+    <!-- ─── USUÁRIOS ─── -->
     <section id="sec-usuarios" class="hidden p-6">
       <div id="view-lista-u">
         <div class="flex items-center justify-between mb-5">
-          <h2 class="text-2xl font-bold text-slate-800">UsuÃ¡rios</h2>
+          <h2 class="text-2xl font-bold text-slate-800">Usuários</h2>
           <button onclick="abrirFormUsuario()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg flex items-center gap-1.5">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            Novo UsuÃ¡rio
+            Novo Usuário
           </button>
         </div>
         <div id="form-usuario" class="hidden bg-white rounded-xl border border-slate-200 p-6 mb-5">
-          <h3 id="titulo-form-u" class="font-semibold text-slate-800 mb-4">Novo UsuÃ¡rio</h3>
+          <h3 id="titulo-form-u" class="font-semibold text-slate-800 mb-4">Novo Usuário</h3>
           <div id="erro-form-u" class="hidden mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-lg"></div>
           <form id="form-u" class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="hidden" id="u-id">
@@ -199,9 +199,9 @@
             <div><label class="block text-xs font-medium text-slate-600 mb-1">Cargo</label><input id="u-cargo" type="text" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
             <div><label class="block text-xs font-medium text-slate-600 mb-1">Perfil</label>
               <select id="u-role" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                <option value="usuario">UsuÃ¡rio</option><option value="admin">Administrador (TI)</option>
+                <option value="usuario">Usuário</option><option value="admin">Administrador (TI)</option>
               </select></div>
-            <div><label class="block text-xs font-medium text-slate-600 mb-1">Senha <span id="senha-hint" class="text-slate-400">(obrigatÃ³ria)</span></label><input id="u-senha" type="password" placeholder="MÃ­nimo 6 caracteres" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Senha <span id="senha-hint" class="text-slate-400">(obrigatória)</span></label><input id="u-senha" type="password" placeholder="Mínimo 6 caracteres" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></div>
             <div class="md:col-span-2 flex gap-3">
               <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-6 py-2.5 rounded-lg text-sm transition">Salvar</button>
               <button type="button" onclick="fecharFormUsuario()" class="text-slate-600 font-medium px-4 py-2.5 rounded-lg text-sm hover:bg-slate-100">Cancelar</button>
@@ -219,15 +219,15 @@
       </div>
     </section>
 
-    <!-- âââ SUGESTÃES âââ -->
+    <!-- ─── SUGESTÕES ─── -->
     <section id="sec-sugestoes" class="hidden p-6">
       <div id="view-lista-s">
-        <h2 class="text-2xl font-bold text-slate-800 mb-5">SugestÃµes de Melhoria</h2>
+        <h2 class="text-2xl font-bold text-slate-800 mb-5">Sugestões de Melhoria</h2>
         <div id="cards-sug" class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-5"></div>
         <div class="flex gap-3 mb-4 flex-wrap">
           <select id="s-fil-status" onchange="carregarSugestoes()" class="border border-slate-300 rounded-lg px-3 py-2 text-sm">
             <option value="">Todos os status</option>
-            <option>Aberta</option><option>Em AnÃ¡lise</option><option>Aprovada</option><option>Implementada</option><option>Recusada</option>
+            <option>Aberta</option><option>Em Análise</option><option>Aprovada</option><option>Implementada</option><option>Recusada</option>
           </select>
         </div>
         <div id="lista-sug-admin" class="space-y-3"></div>
@@ -240,20 +240,20 @@
       </div>
     </section>
 
-    <!-- âââ AVALIAÃÃES âââ -->
+    <!-- ─── AVALIAÇÕES ─── -->
     <section id="sec-avaliacoes" class="hidden p-6">
-      <h2 class="text-2xl font-bold text-slate-800 mb-5">AvaliaÃ§Ãµes dos Atendimentos</h2>
+      <h2 class="text-2xl font-bold text-slate-800 mb-5">Avaliações dos Atendimentos</h2>
       <div id="cards-aval" class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5"></div>
       <div class="bg-white rounded-xl border border-slate-200 p-5">
-        <h3 class="font-semibold text-slate-800 mb-4">Todas as AvaliaÃ§Ãµes</h3>
+        <h3 class="font-semibold text-slate-800 mb-4">Todas as Avaliações</h3>
         <div id="lista-aval-admin" class="space-y-3"></div>
       </div>
     </section>
 
-        <!-- CONCLUÃDOS -->
+        <!-- CONCLUÍDOS -->
               <section id="sec-concluidos" class="hidden p-6">
                       <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
-                                <h2 class="text-2xl font-bold text-slate-800">Chamados ConcluÃ­dos</h2>
+                                <h2 class="text-2xl font-bold text-slate-800">Chamados Concluídos</h2>
                                         </div>
                                                 <div id="lista-concluidos-admin" class="space-y-3"></div>
                                                       </section>
@@ -294,7 +294,7 @@ async function init() {
   await carregarDashboard();
 }
 
-// âââ Dashboard ââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Dashboard ────────────────────────────────────────────────
 async function carregarDashboard() {
   const periodo = document.getElementById('periodo-dash').value;
   const d = await api(`/api/dashboard/stats?periodo=${periodo}`);
@@ -309,20 +309,20 @@ async function carregarDashboard() {
     kpi('Total',d.total,'#6366f1'),
     kpi('Abertos',d.abertos,'#3b82f6','Aberto'),
     kpi('Andamento',d.andamento,'#f59e0b','Em Andamento'),
-    kpi('ConcluÃ­dos',d.concluidos,'#10b981','Concluido'),
+    kpi('Concluídos',d.concluidos,'#10b981','Concluido'),
     kpi('Cancelados',d.cancelados,'#6b7280','Cancelado'),
-    kpi('CrÃ­ticos',d.criticos,'#ef4444'),
+    kpi('Críticos',d.criticos,'#ef4444'),
     kpi('Atrasados',d.atrasados,'#dc2626'),
-    kpi('Nota MÃ©dia',d.avaliacao_media?`${d.avaliacao_media}â­`:'â','#eab308'),
+    kpi('Nota Média',d.avaliacao_media?`${d.avaliacao_media}⭐`:'—','#eab308'),
   ].join('');
 
-  // Tempo mÃ©dio
-  const tmaStr = d.tma ? `${d.tma}h` : 'â';
-  const tmrStr = d.tmr ? `${d.tmr}h` : 'â';
+  // Tempo médio
+  const tmaStr = d.tma ? `${d.tma}h` : '—';
+  const tmrStr = d.tmr ? `${d.tmr}h` : '—';
   document.getElementById('kpi-cards').innerHTML += `
     <div class="col-span-2 bg-white rounded-xl border border-slate-200 p-4 flex gap-6">
-      <div><p class="text-xs text-slate-500">â± Tempo mÃ©dio 1Âª resposta</p><p class="text-2xl font-bold text-slate-800">${tmaStr}</p></div>
-      <div class="border-l border-slate-200 pl-6"><p class="text-xs text-slate-500">â Tempo mÃ©dio resoluÃ§Ã£o</p><p class="text-2xl font-bold text-slate-800">${tmrStr}</p></div>
+      <div><p class="text-xs text-slate-500">⏱ Tempo médio 1ª resposta</p><p class="text-2xl font-bold text-slate-800">${tmaStr}</p></div>
+      <div class="border-l border-slate-200 pl-6"><p class="text-xs text-slate-500">✅ Tempo médio resolução</p><p class="text-2xl font-bold text-slate-800">${tmrStr}</p></div>
     </div>`;
 
   // Charts
@@ -378,7 +378,7 @@ async function carregarDashboard() {
       <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-full bg-indigo-400 rounded-full" style="width:${Math.round((s.n/maxS)*100)}%"></div></div></div>
     </div>`).join('') || '<p class="text-slate-400 text-sm">Sem dados.</p>';
 
-  // Top usuÃ¡rios
+  // Top usuários
   const maxU = Math.max(...d.por_usuario.map(u=>u.n), 1);
   document.getElementById('top-usuarios').innerHTML = d.por_usuario.slice(0,8).map((u,i)=>`
     <div class="flex items-center gap-2">
@@ -390,23 +390,23 @@ async function carregarDashboard() {
   // Recorrentes
   document.getElementById('recorrentes-list').innerHTML = d.recorrentes.length
     ? d.recorrentes.map(r=>`<div class="flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0">
-        <div><span class="text-sm font-medium text-slate-700">${r.setor}</span> <span class="text-slate-400 text-sm">â ${r.categoria}</span></div>
+        <div><span class="text-sm font-medium text-slate-700">${r.setor}</span> <span class="text-slate-400 text-sm">— ${r.categoria}</span></div>
         <span class="text-sm font-bold text-orange-600">${r.n}x</span></div>`).join('')
     : '<p class="text-slate-400 text-sm">Nenhum recorrente.</p>';
 
   // Atrasados
   document.getElementById('atrasados-list').innerHTML = d.lista_atrasados.length
     ? d.lista_atrasados.slice(0,5).map(c=>`<div onclick="abrirDetalheChamado(${c.id})" class="cursor-pointer flex items-center justify-between py-1.5 border-b border-slate-100 last:border-0 hover:bg-slate-50 -mx-1 px-1 rounded">
-        <div><p class="text-sm font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-400">${c.solicitante_setor} Â· SLA: ${fmtData(c.sla_limite)}</p></div>
+        <div><p class="text-sm font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-400">${c.solicitante_setor} · SLA: ${fmtData(c.sla_limite)}</p></div>
         <span class="text-xs ${bp(c.prioridade)} px-2 py-0.5 rounded-full">${c.prioridade}</span></div>`).join('')
-    : '<p class="text-slate-400 text-sm text-green-600">â Nenhum atrasado.</p>';
+    : '<p class="text-slate-400 text-sm text-green-600">✓ Nenhum atrasado.</p>';
 
-  // AvaliaÃ§Ãµes
+  // Avaliações
   document.getElementById('aval-recentes').innerHTML = d.avaliacoes_recentes.length
     ? d.avaliacoes_recentes.map(a=>`<div class="flex items-start gap-3 py-2 border-b border-slate-100 last:border-0">
-        <div class="flex-1"><p class="text-sm text-slate-800">${a.chamado_titulo}</p><p class="text-xs text-slate-500">${a.usuario_nome} Â· ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-xs text-slate-600 mt-0.5 italic">"${a.comentario}"</p>`:''}</div>
-        <span class="text-sm">${'â­'.repeat(a.nota)}</span></div>`).join('')
-    : '<p class="text-slate-400 text-sm">Sem avaliaÃ§Ãµes.</p>';
+        <div class="flex-1"><p class="text-sm text-slate-800">${a.chamado_titulo}</p><p class="text-xs text-slate-500">${a.usuario_nome} · ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-xs text-slate-600 mt-0.5 italic">"${a.comentario}"</p>`:''}</div>
+        <span class="text-sm">${'⭐'.repeat(a.nota)}</span></div>`).join('')
+    : '<p class="text-slate-400 text-sm">Sem avaliações.</p>';
 }
 
 function kpi(label, val, color, filtro) {  const click = filtro ? `onclick="abrirModalStatus('${filtro}')" style="cursor:pointer"` : '';
@@ -417,7 +417,7 @@ function kpi(label, val, color, filtro) {  const click = filtro ? `onclick="abri
 }
 function destroyChart(id) { if (charts[id]) { charts[id].destroy(); delete charts[id]; } }
 
-// âââ Todos os Chamados ââââââââââââââââââââââââââââââââââââââââ
+// ─── Todos os Chamados ────────────────────────────────────────
 async function carregarTodosChamados() {
   const busca = document.getElementById('a-busca').value;
   const status = document.getElementById('a-status').value;
@@ -443,10 +443,10 @@ async function carregarTodosChamados() {
             <span class="text-xs px-2 py-0.5 rounded-full font-medium ${bs(c.status)}">${c.status}</span>
             <span class="text-xs px-2 py-0.5 rounded-full font-medium ${bp(c.prioridade)}">${c.prioridade}</span>
             <span class="text-xs px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full">${c.setor}</span>
-            ${c.sla_limite && c.status!=='Concluido' && c.status!=='Cancelado' && new Date(c.sla_limite.replace(' ','T'))<new Date() ? '<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">â ï¸ Atrasado</span>' : ''}
+            ${c.sla_limite && c.status!=='Concluido' && c.status!=='Cancelado' && new Date(c.sla_limite.replace(' ','T'))<new Date() ? '<span class="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">⚠️ Atrasado</span>' : ''}
           </div>
           <h3 class="font-semibold text-slate-800 truncate">${c.titulo}</h3>
-          <p class="text-xs text-slate-500">${c.categoria} Â· ${c.solicitante_nome} Â· ${fmtData(c.criado_em)}</p>
+          <p class="text-xs text-slate-500">${c.categoria} · ${c.solicitante_nome} · ${fmtData(c.criado_em)}</p>
         </div>
         <svg class="w-4 h-4 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </div>
@@ -458,19 +458,19 @@ async function abrirDetalheChamado(id) {
   document.getElementById('view-detalhe-c').classList.remove('hidden');
   const c = await api(`/api/chamados/${id}`);
   if (!c) return;
-  const hist = (c.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} Â· ${fmtData(h.criado_em)}</p></div></div>`).join('');
-  const anexosHtml = (c.anexos||[]).map(a=>`<a href="/uploads/${a.nome_arquivo}" target="_blank" class="flex items-center gap-2 text-sm text-blue-600 hover:underline">ð ${a.nome_original}</a>`).join('') || '<p class="text-slate-400 text-sm">Nenhum.</p>';
+  const hist = (c.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} · ${fmtData(h.criado_em)}</p></div></div>`).join('');
+  const anexosHtml = (c.anexos||[]).map(a=>`<a href="/uploads/${a.nome_arquivo}" target="_blank" class="flex items-center gap-2 text-sm text-blue-600 hover:underline">📎 ${a.nome_original}</a>`).join('') || '<p class="text-slate-400 text-sm">Nenhum.</p>';
   document.getElementById('detalhe-admin-c').innerHTML = `
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
       <div class="xl:col-span-2 space-y-4">
         <div class="bg-white rounded-xl border border-slate-200 p-5">
           <p class="text-xs font-mono text-slate-400 mb-1">${c.protocolo}</p>
           <h2 class="text-xl font-bold text-slate-800 mb-1">${c.titulo}</h2>
-          <p class="text-slate-500 text-sm">${c.categoria} Â· ${c.setor} Â· ${c.solicitante_nome}</p>
+          <p class="text-slate-500 text-sm">${c.categoria} · ${c.setor} · ${c.solicitante_nome}</p>
           <div class="flex gap-2 mt-3"><span class="px-3 py-1 rounded-full text-sm font-medium ${bs(c.status)}">${c.status}</span><span class="px-3 py-1 rounded-full text-sm font-medium ${bp(c.prioridade)}">${c.prioridade}</span></div>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">DescriÃ§Ã£o</h4>
+          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">Descrição</h4>
           <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg">${c.descricao}</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
@@ -478,10 +478,10 @@ async function abrirDetalheChamado(id) {
           <div class="space-y-1">${anexosHtml}</div>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">HistÃ³rico</h3>
-          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist||'<p class="text-slate-400 text-sm">Sem histÃ³rico.</p>'}</div>
+          <h3 class="font-semibold text-slate-800 mb-4">Histórico</h3>
+          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist||'<p class="text-slate-400 text-sm">Sem histórico.</p>'}</div>
         </div>
-        ${c.avaliacao?`<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5"><h4 class="font-semibold text-slate-800 mb-2">AvaliaÃ§Ã£o do UsuÃ¡rio</h4><div class="text-xl mb-2">${'â­'.repeat(c.avaliacao.nota)}</div><p class="text-sm text-slate-600 mb-3">${c.avaliacao.comentario||'Sem comentÃ¡rio.'}</p><div class="flex gap-2"><button onclick="editarAvaliacaoAdmin(${c.id},${c.avaliacao.nota},\`${(c.avaliacao.comentario||'').replace(/`/g,"'")}\`)" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition">âï¸ Editar AvaliaÃ§Ã£o</button><button onclick="removerAvaliacaoAdmin(${c.id})" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition">ðï¸ Remover AvaliaÃ§Ã£o</button></div></div>`:''}
+        ${c.avaliacao?`<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-5"><h4 class="font-semibold text-slate-800 mb-2">Avaliação do Usuário</h4><div class="text-xl mb-2">${'⭐'.repeat(c.avaliacao.nota)}</div><p class="text-sm text-slate-600 mb-3">${c.avaliacao.comentario||'Sem comentário.'}</p><div class="flex gap-2"><button onclick="editarAvaliacaoAdmin(${c.id},${c.avaliacao.nota},\`${(c.avaliacao.comentario||'').replace(/`/g,"'")}\`)" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition">✏️ Editar Avaliação</button><button onclick="removerAvaliacaoAdmin(${c.id})" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium py-1.5 px-3 rounded-lg transition">🗑️ Remover Avaliação</button></div></div>`:''}
       </div>
       <div class="space-y-4">
         <div class="bg-white rounded-xl border border-slate-200 p-5">
@@ -495,17 +495,17 @@ async function abrirDetalheChamado(id) {
               <select id="ed-prio" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
                 ${['Baixa','Media','Alta','Critica'].map(p=>`<option ${c.prioridade===p?'selected':''}>${p}</option>`).join('')}
               </select></div>
-            <div><label class="block text-xs font-medium text-slate-600 mb-1">Data Enc. (SLA)</label><input type="datetime-local" id="ed-sla" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="${c.sla_limite?c.sla_limite.replace(' ','T').slice(0,16):''}"></div><div><label class="block text-xs font-medium text-slate-600 mb-1">ComentÃ¡rio / AÃ§Ã£o</label>
+            <div><label class="block text-xs font-medium text-slate-600 mb-1">Data Enc. (SLA)</label><input type="datetime-local" id="ed-sla" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" value="${c.sla_limite?c.sla_limite.replace(' ','T').slice(0,16):''}"></div><div><label class="block text-xs font-medium text-slate-600 mb-1">Comentário / Ação</label>
               <textarea id="ed-coment" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea></div>
-            <button onclick="salvarChamado(${c.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition">Salvar AlteraÃ§Ãµes</button>
-            <button onclick="excluirChamado(${c.id})" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg text-sm transition mt-2">ðï¸ Excluir Chamado</button>
+            <button onclick="salvarChamado(${c.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm transition">Salvar Alterações</button>
+            <button onclick="excluirChamado(${c.id})" class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2.5 rounded-lg text-sm transition mt-2">🗑️ Excluir Chamado</button>
           </div>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5 text-sm space-y-2">
           <div class="flex justify-between"><span class="text-slate-500">Abertura</span><span>${fmtData(c.criado_em)}</span></div>
-          ${c.responsavel_nome?`<div class="flex justify-between"><span class="text-slate-500">ResponsÃ¡vel</span><span>${c.responsavel_nome}</span></div>`:''}
+          ${c.responsavel_nome?`<div class="flex justify-between"><span class="text-slate-500">Responsável</span><span>${c.responsavel_nome}</span></div>`:''}
           ${c.sla_limite?`<div class="flex justify-between"><span class="text-slate-500">SLA</span><span>${fmtData(c.sla_limite)}</span></div>`:''}
-          ${c.primeiro_atendimento_em?`<div class="flex justify-between"><span class="text-slate-500">1Âª Resposta</span><span>${fmtData(c.primeiro_atendimento_em)}</span></div>`:''}
+          ${c.primeiro_atendimento_em?`<div class="flex justify-between"><span class="text-slate-500">1ª Resposta</span><span>${fmtData(c.primeiro_atendimento_em)}</span></div>`:''}
           ${c.fechado_em?`<div class="flex justify-between"><span class="text-slate-500">Fechado em</span><span>${fmtData(c.fechado_em)}</span></div>`:''}
         </div>
       </div>
@@ -522,7 +522,7 @@ async function salvarChamado(id) {
 }
 function voltarListaC() { document.getElementById('view-lista-c').classList.remove('hidden'); document.getElementById('view-detalhe-c').classList.add('hidden'); carregarTodosChamados(); }
 
-// âââ UsuÃ¡rios âââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Usuários ─────────────────────────────────────────────────
 async function carregarUsuarios() {
   const lista = await api('/api/usuarios');
   if (!lista) return;
@@ -542,8 +542,8 @@ async function carregarUsuarios() {
     </tr>`).join('');
 }
 function abrirFormUsuario(id) {
-  document.getElementById('titulo-form-u').textContent = id ? 'Editar UsuÃ¡rio' : 'Novo UsuÃ¡rio';
-  document.getElementById('senha-hint').textContent = id ? '(deixe em branco para manter)' : '(obrigatÃ³ria)';
+  document.getElementById('titulo-form-u').textContent = id ? 'Editar Usuário' : 'Novo Usuário';
+  document.getElementById('senha-hint').textContent = id ? '(deixe em branco para manter)' : '(obrigatória)';
   document.getElementById('form-usuario').classList.remove('hidden');
   document.getElementById('u-id').value = id||'';
 }
@@ -557,7 +557,7 @@ function editarUsuario(id, nome, email, setor, cargo, role) {
   document.getElementById('u-role').value=role;
 }
 async function bloquearUsuario(id) {
-  if (!confirm('Bloquear este usuÃ¡rio?')) return;
+  if (!confirm('Bloquear este usuário?')) return;
   await fetch(`/api/usuarios/${id}`,{method:'PUT',headers:H,body:JSON.stringify({ativo:0})});
   carregarUsuarios();
 }
@@ -580,20 +580,20 @@ document.getElementById('form-u').addEventListener('submit', async e => {
   if (senha) payload.senha = senha;
   const url = id ? `/api/usuarios/${id}` : '/api/usuarios';
   const method = id ? 'PUT' : 'POST';
-  if (!id && !senha) { erroEl.textContent='Senha obrigatÃ³ria para novo usuÃ¡rio.'; erroEl.classList.remove('hidden'); return; }
+  if (!id && !senha) { erroEl.textContent='Senha obrigatória para novo usuário.'; erroEl.classList.remove('hidden'); return; }
   const r = await fetch(url,{method,headers:H,body:JSON.stringify(payload)});
   const data = await r.json();
   if (!r.ok) { erroEl.textContent=data.erro; erroEl.classList.remove('hidden'); return; }
   fecharFormUsuario(); carregarUsuarios();
 });
 
-// âââ SugestÃµes ââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Sugestões ────────────────────────────────────────────────
 async function carregarSugestoes() {
   const ds = await api('/api/dashboard/sugestoes');
   if (!ds) return;
-  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em AnÃ¡lise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
+  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em Análise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
   document.getElementById('cards-sug').innerHTML = [
-    ['Total',ds.total,'#6366f1'],['Abertas',ds.abertas,'#3b82f6'],['Em AnÃ¡lise',ds.analise,'#f59e0b'],['Aprovadas',ds.aprovadas,'#10b981'],['Implantadas',ds.implantadas,'#059669']
+    ['Total',ds.total,'#6366f1'],['Abertas',ds.abertas,'#3b82f6'],['Em Análise',ds.analise,'#f59e0b'],['Aprovadas',ds.aprovadas,'#10b981'],['Implantadas',ds.implantadas,'#059669']
   ].map(([l,v,c])=>kpi(l,v,c)).join('');
 
   const status = document.getElementById('s-fil-status').value;
@@ -601,14 +601,14 @@ async function carregarSugestoes() {
   const lista = await api(`/api/sugestoes?${p}`);
   if (!lista) return;
   const el = document.getElementById('lista-sug-admin');
-  if (!lista.length) { el.innerHTML='<div class="text-center py-10 text-slate-400 bg-white rounded-xl border border-slate-200"><p>Nenhuma sugestÃ£o.</p></div>'; return; }
+  if (!lista.length) { el.innerHTML='<div class="text-center py-10 text-slate-400 bg-white rounded-xl border border-slate-200"><p>Nenhuma sugestão.</p></div>'; return; }
   el.innerHTML = lista.map(s=>`
     <div onclick="abrirDetalheSug(${s.id})" class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:border-indigo-300 hover:shadow-sm transition">
       <div class="flex items-start justify-between gap-3">
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2 mb-1"><span class="text-xs px-2 py-0.5 rounded-full font-medium ${cores[s.status]||'bg-slate-100 text-slate-700'}">${s.status}</span><span class="text-xs text-slate-400">${s.categoria}</span></div>
           <h3 class="font-semibold text-slate-800">${s.titulo}</h3>
-          <p class="text-sm text-slate-500 mt-0.5">${s.autor_nome} Â· ${s.autor_setor} Â· ${fmtData(s.criado_em)}</p>
+          <p class="text-sm text-slate-500 mt-0.5">${s.autor_nome} · ${s.autor_setor} · ${fmtData(s.criado_em)}</p>
         </div>
         <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </div>
@@ -619,31 +619,31 @@ async function abrirDetalheSug(id) {
   document.getElementById('view-detalhe-s').classList.remove('hidden');
   const s = await api(`/api/sugestoes/${id}`);
   if (!s) return;
-  const hist = (s.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} Â· ${fmtData(h.criado_em)}</p></div></div>`).join('');
-  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em AnÃ¡lise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
+  const hist = (s.historico||[]).map(h=>`<div class="flex gap-3"><div class="w-2 h-2 rounded-full bg-indigo-400 mt-1.5 flex-shrink-0"></div><div><p class="text-sm text-slate-700">${h.descricao}</p><p class="text-xs text-slate-400">${h.autor_nome} · ${fmtData(h.criado_em)}</p></div></div>`).join('');
+  const cores = {'Aberta':'bg-blue-100 text-blue-700','Em Análise':'bg-amber-100 text-amber-700','Aprovada':'bg-green-100 text-green-700','Implementada':'bg-emerald-100 text-emerald-700','Recusada':'bg-red-100 text-red-700'};
   document.getElementById('detalhe-sug').innerHTML = `
     <div class="grid grid-cols-1 xl:grid-cols-3 gap-5">
       <div class="xl:col-span-2 space-y-4">
         <div class="bg-white rounded-xl border border-slate-200 p-5">
           <div class="flex gap-2 mb-2"><span class="text-xs px-2 py-0.5 rounded-full font-medium ${cores[s.status]||'bg-slate-100 text-slate-700'}">${s.status}</span><span class="text-xs text-slate-400">${s.categoria}</span></div>
           <h2 class="text-xl font-bold text-slate-800 mb-1">${s.titulo}</h2>
-          <p class="text-slate-500 text-sm">${s.autor_nome} Â· ${s.autor_setor} Â· ${fmtData(s.criado_em)}</p>
+          <p class="text-slate-500 text-sm">${s.autor_nome} · ${s.autor_setor} · ${fmtData(s.criado_em)}</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">DescriÃ§Ã£o</h4>
+          <h4 class="text-xs font-semibold text-slate-500 uppercase mb-2">Descrição</h4>
           <p class="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg">${s.descricao}</p>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 p-5">
-          <h3 class="font-semibold text-slate-800 mb-4">HistÃ³rico</h3>
-          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist}|'<p class="text-slate-400 text-sm">Sem histÃ³rico.</p>'}</div>
+          <h3 class="font-semibold text-slate-800 mb-4">Histórico</h3>
+          <div class="space-y-3 border-l-2 border-slate-100 pl-4">${hist||'<p class="text-slate-400 text-sm">Sem histórico.</p>'}</div>
         </div>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 p-5 h-fit">
         <h3 class="font-semibold text-slate-800 mb-4">Atualizar Status</h3>
         <select id="sug-status" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500">
-          ${['Aberta','Em AnÃ¡lise','Aprovada','Implementada','Recusada'].map(st=>`<option ${s.status===st?'selected':''}>${st}</option>`).join('')}
+          ${['Aberta','Em Análise','Aprovada','Implementada','Recusada'].map(st=>`<option ${s.status===st?'selected':''}>${st}</option>`).join('')}
         </select>
-        <textarea id="sug-coment" rows="3" placeholder="ComentÃ¡rio (opcional)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+        <textarea id="sug-coment" rows="3" placeholder="Comentário (opcional)" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
         <button onclick="salvarSug(${s.id})" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2.5 rounded-lg text-sm">Salvar</button>
       </div>
     </div>`;
@@ -656,60 +656,60 @@ async function salvarSug(id) {
 }
 function voltarListaS() { document.getElementById('view-lista-s').classList.remove('hidden'); document.getElementById('view-detalhe-s').classList.add('hidden'); carregarSugestoes(); }
 
-// âââ AvaliaÃ§Ãµes âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Avaliações ───────────────────────────────────────────────
 async function carregarAvaliacoes() {
   const d = await api('/api/dashboard/stats?periodo=tudo');
   if (!d) return;
   const total = d.avaliacoes_recentes.length;
   const media = d.avaliacao_media||0;
   document.getElementById('cards-aval').innerHTML = [
-    kpi('AvaliaÃ§Ãµes', total, '#6366f1'),
-    kpi('Nota MÃ©dia', media?`${media} â­`:'â', '#eab308'),
+    kpi('Avaliações', total, '#6366f1'),
+    kpi('Nota Média', media?`${media} ⭐`:'—', '#eab308'),
     kpi('SLA Cumprido', d.sla_cumprido, '#22c55e'),
   ].join('');
   document.getElementById('lista-aval-admin').innerHTML = d.avaliacoes_recentes.length
     ? d.avaliacoes_recentes.map(a=>`
       <div class="flex items-start gap-4 p-4 bg-slate-50 rounded-xl">
-        <div class="text-2xl">${'â­'.repeat(a.nota)}</div>
-        <div class="flex-1"><p class="font-medium text-slate-800">${a.chamado_titulo}</p><p class="text-sm text-slate-500">${a.usuario_nome} Â· ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-sm text-slate-700 mt-1 italic">"${a.comentario}"</p>`:''}</div>
+        <div class="text-2xl">${'⭐'.repeat(a.nota)}</div>
+        <div class="flex-1"><p class="font-medium text-slate-800">${a.chamado_titulo}</p><p class="text-sm text-slate-500">${a.usuario_nome} · ${fmtData(a.criado_em)}</p>${a.comentario?`<p class="text-sm text-slate-700 mt-1 italic">"${a.comentario}"</p>`:''}</div>
       </div>`).join('')
-    : '<p class="text-slate-400">Nenhuma avaliaÃ§Ã£o ainda.</p>';
+    : '<p class="text-slate-400">Nenhuma avaliação ainda.</p>';
 }
 
-// âââ Export CSV âââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Export CSV ───────────────────────────────────────────────
 async function exportarCSV() {
   const lista = await api('/api/chamados');
   if (!lista) return;
   const header = ['Protocolo','Titulo','Categoria','Prioridade','Status','Setor','Solicitante','Responsavel','Criado em','SLA','Fechado em'];
   const rows = lista.map(c=>[c.protocolo,`"${c.titulo}"`,c.categoria,c.prioridade,c.status,c.setor,c.solicitante_nome,c.responsavel_nome||'',c.criado_em,c.sla_limite||'',c.fechado_em||'']);
   const csv = [header,...rows].map(r=>r.join(';')).join('\n');
-  const blob = new Blob(['ï»¿'+csv],{type:'text/csv;charset=utf-8;'});
+  const blob = new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8;'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download=`chamados_${new Date().toISOString().slice(0,10)}.csv`; a.click();
 }
 
-// âââ Admin: aÃ§Ãµes de chamado/avaliaÃ§Ã£o âââââââââââââââââââââââ
+// ─── Admin: ações de chamado/avaliação ───────────────────────
 async function excluirChamado(id) {
-  if (!confirm('Tem certeza que deseja excluir este chamado? Esta aÃ§Ã£o nÃ£o pode ser desfeita.')) return;
+  if (!confirm('Tem certeza que deseja excluir este chamado? Esta ação não pode ser desfeita.')) return;
   const r = await fetch(`/api/chamados/${id}`,{method:'DELETE',headers:H});
   if (r.ok) { voltarListaC(); } else { alert('Erro ao excluir chamado.'); }
 }
 async function removerAvaliacaoAdmin(id) {
-  if (!confirm('Remover a avaliaÃ§Ã£o deste chamado?')) return;
+  if (!confirm('Remover a avaliação deste chamado?')) return;
   const r = await fetch(`/api/chamados/${id}/avaliacao`,{method:'DELETE',headers:H});
-  if (r.ok) { abrirDetalheChamado(id); } else { alert('Erro ao remover avaliaÃ§Ã£o.'); }
+  if (r.ok) { abrirDetalheChamado(id); } else { alert('Erro ao remover avaliação.'); }
 }
 function editarAvaliacaoAdmin(id, notaAtual, comentAtual) {
   const div = document.createElement('div');
   div.id = 'modal-aval-admin';
   div.className = 'fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4';
   div.innerHTML = `<div class="bg-white rounded-2xl w-full max-w-sm p-6 space-y-4">
-    <h3 class="font-semibold text-slate-800 text-lg">Editar AvaliaÃ§Ã£o</h3>
+    <h3 class="font-semibold text-slate-800 text-lg">Editar Avaliação</h3>
     <div><p class="text-xs font-medium text-slate-600 mb-2">Nota</p>
-      <div class="flex gap-2" id="estrelas-admin">${[1,2,3,4,5].map(n=>`<button data-n="${n}" onclick="setNotaAdmin(${n})" class="text-3xl transition ${n<=notaAtual?'text-yellow-400':'text-slate-300'} hover:text-yellow-400">â</button>`).join('')}</div>
+      <div class="flex gap-2" id="estrelas-admin">${[1,2,3,4,5].map(n=>`<button data-n="${n}" onclick="setNotaAdmin(${n})" class="text-3xl transition ${n<=notaAtual?'text-yellow-400':'text-slate-300'} hover:text-yellow-400">★</button>`).join('')}</div>
       <input type="hidden" id="nota-admin-val" value="${notaAtual}">
     </div>
-    <div><label class="block text-xs font-medium text-slate-600 mb-1">ComentÃ¡rio</label>
+    <div><label class="block text-xs font-medium text-slate-600 mb-1">Comentário</label>
       <textarea id="coment-admin-val" rows="3" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none">${comentAtual}</textarea>
     </div>
     <div class="flex gap-3">
@@ -731,18 +731,18 @@ async function salvarAvaliacaoAdmin(id) {
   if (!nota) { alert('Selecione uma nota.'); return; }
   const r = await fetch(`/api/chamados/${id}/avaliacao`,{method:'PUT',headers:H,body:JSON.stringify({nota,comentario})});
   if (r.ok) { document.getElementById('modal-aval-admin').remove(); abrirDetalheChamado(id); }
-  else { alert('Erro ao salvar avaliaÃ§Ã£o.'); }
+  else { alert('Erro ao salvar avaliação.'); }
 }
 
-// âââ Helpers ââââââââââââââââââââââââââââââââââââââââââââââââââ
+// ─── Helpers ──────────────────────────────────────────────────
 function bs(s){return{'Aberto':'bg-blue-100 text-blue-700','Em Andamento':'bg-amber-100 text-amber-700','Aguardando Usuario':'bg-purple-100 text-purple-700','Concluido':'bg-green-100 text-green-700','Cancelado':'bg-red-100 text-red-700'}[s]||'bg-slate-100 text-slate-700';}
 function bp(p){return{'Critica':'bg-red-100 text-red-700','Alta':'bg-orange-100 text-orange-700','Media':'bg-yellow-100 text-yellow-700','Baixa':'bg-green-100 text-green-700'}[p]||'bg-slate-100 text-slate-700';}
 function fmtData(d){if(!d)return'';try{return new Date(d.replace(' ','T')).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});}catch{return d;}}
 
-alolassync function abrirModalStatus(filtro){const lista=await api(`/api/chamados?status=${encodeURIComponent(filtro)}`);document.getElementById('modal-status-title').textContent=filtro;document.getElementById('modal-status-body').innerHTML=lista&&lista.length?lista.map(c=>`<div class="border border-slate-200 rounded-lg p-3 cursor-pointer hover:bg-slate-50" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><p class="font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-500">#${c.protocolo} Â· ${c.solicitante_nome||''}</p></div>`).join(''):'<p class="text-slate-400 text-sm">Nenhum chamado.</p>';document.getElementById('modal-status').classList.remove('hidden');}
-asjYnc function carregarConcluidos(){const lista=await api('/api/chamados?status=Concluido');const el=document.getElementById('lista-concluidos-admin');if(!el)return;el.innerHTML=lista&&lista.length?lista.map(c=>`<div class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:shadow-md transition" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><div class="flex items-center gap-3 flex-wrap"><span class="text-xs font-medium text-slate-500">#${c.protocolo}</span><span class="font-medium text-slate-800">${c.titulo}</span><span class="ml-auto text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded-full">ConcluÃ­do</span></div><div class="mt-1 text-xs text-slate-500">${c.setor||''} Â· ${c.solicitante_nome||''} Â· ${fmtData(c.fechado_em)||'â'}</div></div>`).join(''):'<p class="text-slate-400">Nenhum chamado concluÃ­do.</p>';}
+async function abrirModalStatus(filtro){const lista=await api(`/api/chamados?status=${encodeURIComponent(filtro)}`);document.getElementById('modal-status-title').textContent=filtro;document.getElementById('modal-status-body').innerHTML=lista&&lista.length?lista.map(c=>`<div class="border border-slate-200 rounded-lg p-3 cursor-pointer hover:bg-slate-50" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><p class="font-medium text-slate-800">${c.titulo}</p><p class="text-xs text-slate-500">#${c.protocolo} · ${c.solicitante_nome||''}</p></div>`).join(''):'<p class="text-slate-400 text-sm">Nenhum chamado.</p>';document.getElementById('modal-status').classList.remove('hidden');}
+async function carregarConcluidos(){const lista=await api('/api/chamados?status=Concluido');const el=document.getElementById('lista-concluidos-admin');if(!el)return;el.innerHTML=lista&&lista.length?lista.map(c=>`<div class="bg-white rounded-xl border border-slate-200 p-4 cursor-pointer hover:shadow-md transition" onclick="ir('chamados');setTimeout(()=>abrirDetalheChamado(${c.id}),100)"><div class="flex items-center gap-3 flex-wrap"><span class="text-xs font-medium text-slate-500">#${c.protocolo}</span><span class="font-medium text-slate-800">${c.titulo}</span><span class="ml-auto text-xs text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Concluído</span></div><div class="mt-1 text-xs text-slate-500">${c.setor||''} · ${c.solicitante_nome||''} · ${fmtData(c.fechado_em)||'−'}</div></div>`).join(''):'<p class="text-slate-400">Nenhum chamado concluído.</p>';}
 init();
 </script>
-<div id="modal-status" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col"><div class="flex items-center justify-between p-5 border-b border-slate-200"><h3 id="modal-status-title" class="font-semibold text-slate-800 text-lg"></h3><button onclick="document.getElementById('modal-status').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">â</button></div><div id="modal-status-body" class="overflow-y-auto p-5 space-y-2 flex-1"></div></div></div>
+<div id="modal-status" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"><div class="bg-white rounded-2xl w-full max-w-lg max-h-[80vh] flex flex-col"><div class="flex items-center justify-between p-5 border-b border-slate-200"><h3 id="modal-status-title" class="font-semibold text-slate-800 text-lg"></h3><button onclick="document.getElementById('modal-status').classList.add('hidden')" class="text-slate-400 hover:text-slate-600">✕</button></div><div id="modal-status-body" class="overflow-y-auto p-5 space-y-2 flex-1"></div></div></div>
 </body>
-</
+</html>
